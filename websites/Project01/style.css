@@ -5,7 +5,19 @@
 header{
     background-color: rgb(184, 184, 184);
     height: 10vh;
+    display: flex;
+    justify-content: center;
 }
+.headerCenter {
+    background-color: rgb(145, 137, 128);
+    position: absolute;
+    width: 40vw;
+    height: 7vh;
+    margin-top: 6.5vh;
+    z-index: 2;
+}
+
+
 
 .mainUp {
     background-color: beige;
@@ -21,14 +33,17 @@ header{
     bottom: 0;
 }
 .downCenter {
-    background-color: rgb(35, 78, 116);
+    background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
     width: 50vw;
     height: 10vh;
     margin-top: -5vh;
     z-index: 2;
 }
 .downInfo {
-    background-color: rgb(124, 104, 104);
+    background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
     width: 100vw;
     height: 30vh;
     margin-top: -5vh;
