@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+}
+
+header{
+    background-color: rgb(184, 184, 184);
+    height: 10vh;
+}
+
+.mainUp {
+    background-color: beige;
+    height: 60vh;
+}
+
+.mainDown {
+    background-color: aliceblue;
+    height: 30vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    bottom: 0;
+}
+.downCenter {
+    background-color: rgb(35, 78, 116);
+    width: 50vw;
+    height: 10vh;
+    margin-top: -5vh;
+    z-index: 2;
+}
+.downInfo {
+    background-color: rgb(124, 104, 104);
+    width: 100vw;
+    height: 30vh;
+    margin-top: -5vh;
+}
