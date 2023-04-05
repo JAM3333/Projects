@@ -1,8 +1,11 @@
 let player;
 let enemies = [];
-let bullets = [];
-let bulletTypes = [{name: "Test1",speed: 10,lifetime: 5},{name: "Test2",speed: 12, lifetime: 6}]
-let bulletInterval = 200; // 200 ms between shots
+let bullets = []
+
+const bulletTypes = [{name: "Test1",speed: 10,lifetime: 5},{name: "Test2",speed: 12, lifetime: 6}]
+const enemieTypes = [{name: "Test1",speed: 10},{name: "Test2",speed: 12}]
+
+const bulletInterval = 200; // 200 ms between shots
 let playerStyle;
 
 let loop = 0;
@@ -31,7 +34,15 @@ let state = {
 };
 
 let game = ["5:1,2:2","7:1,2:2"]; //amount enemies:type (if multiple types ,)
-let spawnPoints = ["-50:-50","window.innerWidth/2:-50"]
+
+let spawnPoints = ["-50:-50",
+                    window.innerWidth/2+":-50",
+                    window.innerWidth+":-50",
+                    window.innerWidth+":"+window.innerHeight/2,
+                    window.innerWidth+":"+window.innerHeight,
+                    window.innerWidth/2+":"+window.innerHeight,
+                    "-50:"+window.innerHeight,
+                    "-50:"+window.innerHeight/2,] // x:y
 let enemieWave = 0;
 let currentEnemies = 0;
 
@@ -84,8 +95,8 @@ function createPlayer(){
     document.body.appendChild(player);
 }
 
-function createEnemy(type,posX,posY,size){
-    enemies.push({type: type, posX: posX, posY: posY, size: size, draw: function(){
+function createEnemy(type,posX,posY,size,angle){
+    enemies.push({type: type, posX: posX, posY: posY, size: size, angle: angle, draw: function(){
         let enemie = document.createElement("div");
         enemie.className = "enemie"+(enemies.length-1)
         let enemieStyle = enemie.style;
@@ -93,14 +104,15 @@ function createEnemy(type,posX,posY,size){
         enemieStyle.height = size+"px";
         enemieStyle.width = size+"px";
         enemieStyle.position = "absolute";
+        enemieStyle.transform = "rotate("+angle+"deg)";
         enemieStyle.backgroundColor = "red";
         enemieStyle.left = posX+"px";
         enemieStyle.top = posY+"px";
         document.body.appendChild(enemie);
     }})
 }
-function createBullet(type,size,posX,posY,angle,speed){
-    bullets.push({type: type, posX: posX, posY: posY, size: size,angle: angle, speed: speed, time: 0, draw: function(){
+function createBullet(type,size,posX,posY,angle){
+    bullets.push({type: type, posX: posX, posY: posY, size: size,angle: angle, speed: 0, aliveTime: 0, draw: function(){
         let bullet = document.createElement("div");
         bullet.className = "bullet"+(bullets.length-1);
         let bulletStyle = bullet.style;
@@ -126,50 +138,62 @@ const gameSetup = function(){
 gameSetup();
 
 function masterUpdate(){
-
     loop += 16;
     if (loop >= bulletInterval){
         loop = 0;
-        createBullet(bulletTypes[0].name,20,state.player.posX + state.player.playerSize[0]/2,state.player.posY + state.player.playerSize[1]/2,state.player.rot,bulletTypes[0].speed);
+        createBullet(bulletTypes[0].name,20,state.player.posX + state.player.playerSize[0]/2,state.player.posY + state.player.playerSize[1]/2,state.player.rot);
         bullets[bullets.length-1].draw();
-        console.log(bullets)
+
+        let spawnpointPos = spawnPoints[Math.floor(Math.random() * spawnPoints.length)].split(":");
+        let spawnPointX = spawnpointPos[0]
+        let spawnPointY = spawnpointPos[1]
+        createEnemy("Test1",spawnPointX,spawnPointY,20,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
+        enemies[enemies.length-1].draw();
     }
-    createEnemy("02",50,50,20);
-    enemies[enemies.length-1].draw();
 
     if (enemies.length != 0) {
         for (let i = 0; i < enemies.length; i++){
             let enemieDiv = document.body.getElementsByClassName("enemie"+i)[0]; 
             if (enemieDiv) {
+
+                enemies[i].posX = enemieDiv.getBoundingClientRect().x
+                enemies[i].posY = enemieDiv.getBoundingClientRect().y
+                
                 enemies[i].angle = Math.atan2(state.player.posX - enemies[i].posX,-(state.player.posX - enemies[i].posY))*180/Math.PI;
-                //console.log(enemies[i].angle)
-                enemieDiv.style.transform += "translateY("+enemies[i].speed+"px),rotate("+enemies[i].angle+"deg)";
+                if (enemies[i].angle < 0) {
+                    enemies[i].angle = 360 + enemies[i].angle 
+                }
+              //  let [currentAngle,unit] = enemieDiv.style.transform.match(/rotate\((\d+)(.+)\)/).slice(1);
+              //  console.log(parseInt(currentAngle));
+                //enemieDiv.style.transform = "rotate("+enemies[i].angle+"deg)"
+                enemieDiv.style.transform = "rotate(-"+enemies[i].angle+"deg)" + enemieDiv.style.transform + "translateY(-"+enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed+"px)"
             } 
         }
     }
-
     if (bullets.length != 0) {
         for (let i = 0; i < bullets.length; i++){
             let bulletDiv = document.body.getElementsByClassName("bullet"+i)[0];
             if (bulletDiv) {
-                bulletDiv.style.transform = bulletDiv.style.transform + "translateY(-"+bullets[i].speed+"px)";
+                bulletDiv.style.transform = bulletDiv.style.transform + "translateY(-"+bulletTypes[bulletTypes.findIndex(item => item.name == bullets[i].type)].speed+"px)";
 
-                bullets[i].time += 1/16
-                bullets[i].posX = bulletDiv.style.left
-                bullets[i].posY = bulletDiv.style.top
+                bullets[i].aliveTime += 1/16
+                bullets[i].posX = bulletDiv.getBoundingClientRect().x
+                bullets[i].posY = bulletDiv.getBoundingClientRect().y
+                
+                if (bullets[i].aliveTime >= bulletTypes[bulletTypes.findIndex(item => item.name == bullets[i].type)].lifetime){
 
-                if (bullets[i].time >= bulletTypes[bulletTypes.findIndex(item => item.name == bullets[i].type)].lifetime){
+                    bullets.splice(bullets.indexOf(bullets[i]),1);
+                    bulletDiv.classList.remove("bullet"+i);
                     bulletDiv.parentNode.removeChild(bulletDiv);
-                    bullets.splice(i) // index verschoben
-                    console.log("del")
-                    for (let i = 0; i < bullets.length+1; i++){
-                        let bulletDiv = document.body.getElementsByClassName("bullet"+i)[0];
-                        if (bulletDiv) {
-                            bulletDiv.className = "bullet"+i;
+
+                    for (let a = 0; a < bullets.length+1; a++){
+                        let bulletDivNew = document.body.getElementsByClassName("bullet"+a)[0];
+                        if (bulletDivNew) {           
+                            bulletDivNew.className = "bullet"+(a-1);
                         }
-                    }
+                    } 
                 }
-            }  
+            } 
         }
     }
     
@@ -191,6 +215,6 @@ function masterUpdate(){
     playerStyle.top = state.player.posY+"px";
 
 
-
+    //requestAnimationFrame(masterUpdate)
     setTimeout(masterUpdate,16)
 }
