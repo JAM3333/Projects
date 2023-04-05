@@ -12,6 +12,7 @@ let loop = 0;
 
 let score = 0;
 let lives = 3;
+let enemyCount = 0;
 
 let canvas = document.getElementById("canvas");
 
@@ -35,14 +36,15 @@ let state = {
 
 let game = ["5:1,2:2","7:1,2:2"]; //amount enemies:type (if multiple types ,)
 
-let spawnPoints = ["-50:-50",
-                    window.innerWidth/2+":-50",
-                    window.innerWidth+":-50",
-                    window.innerWidth+":"+window.innerHeight/2,
-                    window.innerWidth+":"+window.innerHeight,
-                    window.innerWidth/2+":"+window.innerHeight,
-                    "-50:"+window.innerHeight,
-                    "-50:"+window.innerHeight/2,] // x:y
+let spawnPoints = [//"-50:-50",
+                    //window.innerWidth/2+":-50",
+                    //window.innerWidth+":-50",
+                    //window.innerWidth+":"+window.innerHeight/2,
+                   // window.innerWidth+":"+window.innerHeight,
+                    //window.innerWidth/2+":"+window.innerHeight,
+                    window.innerWidth/2+":"+window.innerHeight/2,
+                    //"-50:"+window.innerHeight,
+                    /*"-50:"+window.innerHeight/2,*/] // x:y
 let enemieWave = 0;
 let currentEnemies = 0;
 
@@ -95,20 +97,21 @@ function createPlayer(){
     document.body.appendChild(player);
 }
 
-function createEnemy(type,posX,posY,size,angle){
-    enemies.push({type: type, posX: posX, posY: posY, size: size, angle: angle, draw: function(){
-        let enemie = document.createElement("div");
-        enemie.className = "enemie"+(enemies.length-1)
-        let enemieStyle = enemie.style;
+function createEnemy(type,posX,posY,size,angle,lives){
+    enemies.push({type: type, posX: posX, posY: posY, size: size, angle: angle, isalive: true, lives: lives, draw: function(){
+        let enemy = document.createElement("div");
+        enemy.className = "enemy"+(enemies.length-1)
+        let enemyStyle = enemy.style;
 
-        enemieStyle.height = size+"px";
-        enemieStyle.width = size+"px";
-        enemieStyle.position = "absolute";
-        enemieStyle.transform = "rotate("+angle+"deg)";
-        enemieStyle.backgroundColor = "red";
-        enemieStyle.left = posX+"px";
-        enemieStyle.top = posY+"px";
-        document.body.appendChild(enemie);
+        enemyStyle.height = size+"px";
+        enemyStyle.width = size+"px";
+        enemyStyle.position = "absolute";
+        enemyStyle.transform = "rotate("+angle+"deg)";
+        enemyStyle.backgroundImage = "url(../images/Sprites/Arrow01.png)";
+        enemyStyle.backgroundSize = size+"px";
+        enemyStyle.left = posX+"px";
+        enemyStyle.top = posY+"px";
+        document.body.appendChild(enemy);
     }})
 }
 function createBullet(type,size,posX,posY,angle){
@@ -128,6 +131,15 @@ function createBullet(type,size,posX,posY,angle){
     }})
 }
 
+function collision(posX1,posX2,width1,width2,posY1,posY2,height1,height2) {
+    let collide = true;
+    if (posX1 > posX2 + width2 || posX1 + width1 < posX2 || posY1 > posY2 + height2 || posY1 + height1 < posY2) {
+        collide = false;
+    }
+    return collide
+}
+
+let count = 0;
 
 const gameSetup = function(){
     createPlayer();
@@ -141,19 +153,22 @@ function masterUpdate(){
     loop += 16;
     if (loop >= bulletInterval){
         loop = 0;
-        createBullet(bulletTypes[0].name,20,state.player.posX + state.player.playerSize[0]/2,state.player.posY + state.player.playerSize[1]/2,state.player.rot);
+        createBullet(bulletTypes[0].name,20,state.player.posX + state.player.playerSize[0]/2 - 20/2,state.player.posY + state.player.playerSize[1]/2 - 20/2,state.player.rot,1);
         bullets[bullets.length-1].draw();
-
-        let spawnpointPos = spawnPoints[Math.floor(Math.random() * spawnPoints.length)].split(":");
-        let spawnPointX = spawnpointPos[0]
-        let spawnPointY = spawnpointPos[1]
-        createEnemy("Test1",spawnPointX,spawnPointY,20,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
-        enemies[enemies.length-1].draw();
+        if (count < 5) {
+            count++;
+            let spawnpointPos = spawnPoints[Math.floor(Math.random() * spawnPoints.length)].split(":");
+            let spawnPointX = parseInt(spawnpointPos[0]) + 100*count
+            let spawnPointY = spawnpointPos[1]
+            createEnemy("Test1",spawnPointX,spawnPointY,50,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
+            enemies[enemies.length-1].draw();    
+            enemyCount++;
+        }     
     }
 
     if (enemies.length != 0) {
         for (let i = 0; i < enemies.length; i++){
-            let enemieDiv = document.body.getElementsByClassName("enemie"+i)[0]; 
+            let enemieDiv = document.body.getElementsByClassName("enemy"+i)[0]; 
             if (enemieDiv) {
 
                 enemies[i].posX = enemieDiv.getBoundingClientRect().x
@@ -163,13 +178,23 @@ function masterUpdate(){
                 if (enemies[i].angle < 0) {
                     enemies[i].angle = 360 + enemies[i].angle 
                 }
-              //  let [currentAngle,unit] = enemieDiv.style.transform.match(/rotate\((\d+)(.+)\)/).slice(1);
-              //  console.log(parseInt(currentAngle));
-                //enemieDiv.style.transform = "rotate("+enemies[i].angle+"deg)"
-                enemieDiv.style.transform = "rotate(-"+enemies[i].angle+"deg)" + enemieDiv.style.transform + "translateY(-"+enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed+"px)"
+
+                var rotate = enemieDiv.style.transform.match(/rotate\((\d+)(.+)\)/);
+                if (rotate) {
+                   // console.log(rotate)
+                    var [currentAngle,unit] = rotate.slice(1)
+                }
+                if (currentAngle) {
+                //    console.log(currentAngle);
+                    var realAngle = enemies[i].angle - parseInt(currentAngle)
+                }
+               
+                enemieDiv.style.transform = "rotate("+enemies[i].angle+"deg)"
+               // enemieDiv.style.transform = "rotate(-"+realAngle+"deg)" + enemieDiv.style.transform + "translateY(-"+enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed+"px)"
             } 
         }
     }
+
     if (bullets.length != 0) {
         for (let i = 0; i < bullets.length; i++){
             let bulletDiv = document.body.getElementsByClassName("bullet"+i)[0];
@@ -180,8 +205,23 @@ function masterUpdate(){
                 bullets[i].posX = bulletDiv.getBoundingClientRect().x
                 bullets[i].posY = bulletDiv.getBoundingClientRect().y
                 
-                if (bullets[i].aliveTime >= bulletTypes[bulletTypes.findIndex(item => item.name == bullets[i].type)].lifetime){
+                for (let b = 0; b < enemies.length;b++) {
+                    if (enemies[b].isalive == true){
+                        var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].size,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].size);
+                        if (collide){
+                            enemies[b].isalive = false;
+                            console.log(enemies);                       
+                            let enemieDiv = document.body.getElementsByClassName("enemy"+b)[0];
+                            if (enemieDiv) {
+                                enemieDiv.classList.remove("enemy"+b);
+                                enemieDiv.parentNode.removeChild(enemieDiv);   
+                                enemyCount--;
+                            }         
+                        }
+                    }
+                }
 
+                if (bullets[i].aliveTime >= bulletTypes[bulletTypes.findIndex(item => item.name == bullets[i].type)].lifetime){
                     bullets.splice(bullets.indexOf(bullets[i]),1);
                     bulletDiv.classList.remove("bullet"+i);
                     bulletDiv.parentNode.removeChild(bulletDiv);
@@ -205,7 +245,7 @@ function masterUpdate(){
         state.player.posX = parseInt(state.player.posX) + input[0] / 1.5;
         state.player.posY = parseInt(state.player.posY) + input[1] / 1.5;
     }  
-    state.player.rot = Math.atan2(state.mouse.posX - state.player.posX,-(state.mouse.posY - state.player.posY))*180/Math.PI;
+    state.player.rot = Math.atan2(state.mouse.posX - state.player.posX - state.player.playerSize[0]/2,-(state.mouse.posY - state.player.posY - state.player.playerSize[1]/2))*180/Math.PI;
     if (state.player.rot < 0) {
         state.player.rot = 360 + state.player.rot 
     }
