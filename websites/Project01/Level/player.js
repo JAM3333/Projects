@@ -3,7 +3,7 @@ let enemies = [];
 let bullets = []
 
 const bulletTypes = [{name: "Test1",speed: 10,lifetime: 5},{name: "Test2",speed: 12, lifetime: 6}]
-const enemieTypes = [{name: "Test1",speed: 10},{name: "Test2",speed: 12}]
+const enemieTypes = [{name: "Test1",speed: 2},{name: "Test2",speed: 12}]
 
 const bulletInterval = 200; // 200 ms between shots
 let playerStyle;
@@ -92,6 +92,9 @@ function createPlayer(){
     playerStyle.height = state.player.playerSize[1]+"px";
     playerStyle.position = "absolute";
     playerStyle.backgroundColor = "blue";
+    playerStyle.backgroundImage = "url(../images/Sprites/Arrow01.png)";
+    playerStyle.backgroundSize = state.player.playerSize[0]+"px";
+
     state.player.posX = playerStartPos[0];
     state.player.posY = playerStartPos[1];
     document.body.appendChild(player);
@@ -107,6 +110,7 @@ function createEnemy(type,posX,posY,size,angle,lives){
         enemyStyle.width = size+"px";
         enemyStyle.position = "absolute";
         enemyStyle.transform = "rotate("+angle+"deg)";
+       // enemyStyle.backgroundColor = "red";
         enemyStyle.backgroundImage = "url(../images/Sprites/Arrow01.png)";
         enemyStyle.backgroundSize = size+"px";
         enemyStyle.left = posX+"px";
@@ -155,7 +159,7 @@ function masterUpdate(){
         loop = 0;
         createBullet(bulletTypes[0].name,20,state.player.posX + state.player.playerSize[0]/2 - 20/2,state.player.posY + state.player.playerSize[1]/2 - 20/2,state.player.rot,1);
         bullets[bullets.length-1].draw();
-        if (count < 5) {
+        if (count < 1) {
             count++;
             let spawnpointPos = spawnPoints[Math.floor(Math.random() * spawnPoints.length)].split(":");
             let spawnPointX = parseInt(spawnpointPos[0]) + 100*count
@@ -173,24 +177,16 @@ function masterUpdate(){
 
                 enemies[i].posX = enemieDiv.getBoundingClientRect().x
                 enemies[i].posY = enemieDiv.getBoundingClientRect().y
+                //enemies[i].angle = (enemies[i].angle + Math.atan2(state.player.posX - enemies[i].posX,-(state.player.posY - enemies[i].posY))*180/Math.PI)%360;
+                enemies[i].angle = Math.atan2(state.player.posX - enemies[i].posX,-(state.player.posY - enemies[i].posY))*180/Math.PI;
                 
-                enemies[i].angle = Math.atan2(state.player.posX - enemies[i].posX,-(state.player.posX - enemies[i].posY))*180/Math.PI;
-                if (enemies[i].angle < 0) {
-                    enemies[i].angle = 360 + enemies[i].angle 
+                if (enemies[i].angle >= 0) {
+                    enemies[i].angle *= -1
                 }
+                console.log(enemies[i].angle);
 
-                var rotate = enemieDiv.style.transform.match(/rotate\((\d+)(.+)\)/);
-                if (rotate) {
-                   // console.log(rotate)
-                    var [currentAngle,unit] = rotate.slice(1)
-                }
-                if (currentAngle) {
-                //    console.log(currentAngle);
-                    var realAngle = enemies[i].angle - parseInt(currentAngle)
-                }
-               
                 enemieDiv.style.transform = "rotate("+enemies[i].angle+"deg)"
-               // enemieDiv.style.transform = "rotate(-"+realAngle+"deg)" + enemieDiv.style.transform + "translateY(-"+enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed+"px)"
+                //enemieDiv.style.transform = "rotate(-"+enemies[i].angle+"deg)" + enemieDiv.style.transform + "translateY(-"+enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed+"px)"
             } 
         }
     }
@@ -246,9 +242,7 @@ function masterUpdate(){
         state.player.posY = parseInt(state.player.posY) + input[1] / 1.5;
     }  
     state.player.rot = Math.atan2(state.mouse.posX - state.player.posX - state.player.playerSize[0]/2,-(state.mouse.posY - state.player.posY - state.player.playerSize[1]/2))*180/Math.PI;
-    if (state.player.rot < 0) {
-        state.player.rot = 360 + state.player.rot 
-    }
+
 
     playerStyle.transform = "rotate("+state.player.rot+"deg)"
     playerStyle.left = state.player.posX+"px";
