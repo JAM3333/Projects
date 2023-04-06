@@ -46,7 +46,7 @@ let state = {
     }
 };
 
-let game = ["1;Test1","7;Test2"]; //amount enemies;type (if multiple types ,)
+let game = ["3;Test1","10;Test2"]; //amount enemies;type (if multiple types ,)
 let roundMulti = 1.25;
 let enemyChance = [3,2];
 
