@@ -1,31 +1,46 @@
 * {
     margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-decoration: none;
+    color: white;
+}
+
+body{
+    background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
 }
 
 header{
-    background-color: rgb(184, 184, 184);
+    background-color: rgb(38, 41, 43);
     height: 10vh;
     display: flex;
     justify-content: center;
+    border-bottom: solid 5px rgb(75, 75, 75);
 }
 .headerCenter {
-    background-color: rgb(145, 137, 128);
+    background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);    
     position: absolute;
     width: 40vw;
     height: 7vh;
     margin-top: 6.5vh;
     z-index: 2;
+    font-size: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
 
 .mainUp {
-    background-color: beige;
+    background: linear-gradient(-20deg, rgb(41, 44, 46) 0%, rgb(118, 178, 207) 100%);
     height: 60vh;
 }
 
 .mainDown {
-    background-color: aliceblue;
+    background-color: rgb(66, 66, 77);
     height: 30vh;
     display: flex;
     align-items: center;
@@ -40,11 +55,48 @@ header{
     width: 50vw;
     height: 10vh;
     margin-top: -5vh;
+    padding-bottom: 1vh;
     z-index: 2;
+    font-size: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .downInfo {
     background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
     width: 100vw;
     height: 30vh;
-    margin-top: -5vh;
+    padding-top: 8vh;
+    margin-top: -7vh;
+    display: flex;
+    align-items: top;
+    justify-content: space-evenly;
+    border-top: solid 5px rgb(129, 129, 129);
+}
+
+.info01{
+    background: linear-gradient(-20deg, rgb(44, 69, 88) 0%, rgb(36, 56, 66) 100%);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
+    width: 30vw;
+    height: 20vh;
+}
+
+.info02{
+    background: linear-gradient(-20deg, rgb(75, 70, 56) 0%, rgb(36, 56, 66) 100%);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
+    width: 30vw;
+    height: 20vh;
+}
+
+.info03{
+    background: linear-gradient(-20deg, rgb(56, 71, 64) 0%, rgb(36, 56, 66) 100%);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
+    width: 30vw;
+    height: 20vh;
 }

@@ -5,6 +5,21 @@
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
+    <div class="UI">
+      <div class="uiTop">
+        <a href="../Main/index.html">ToMain</a>
+        <div class="uiTopCenter">
+          <p id="uiScore">Score: 00000</p>
+          <h2 id="uiWave">Wave: 000</h2>
+        </div>
+        <p id="uiLives">Lives: 00</p>
+      </div>
+      <div class="uiDown">
+        <h2>GAME OVER</h2>
+        <p id="uiEndScore">You reached a score of: 0 and ranked #0</p>
+        <input id="buttonPlay" type="submit" name="button" value="Play Again"/>
+      </div>
+    </div>
     <script src="player.js"></script>
     <canvas id="canvas"></canvas>
   </body>
