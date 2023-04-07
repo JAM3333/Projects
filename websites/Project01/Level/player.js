@@ -18,7 +18,7 @@ let loopEnemy = 0;
 
 let paused = false;
 
-let score = 1000;
+let score = 0;
 let lives = 3;
 let enemyCount = 0;
 let enemiesSpawned = false;
