@@ -8,18 +8,20 @@ let enemies = [];
 let bullets = []
 
 const bulletTypes = [{name: "Test1",speed: 12,lifetime: 5,rate: 200},{name: "Test2",speed: 20, lifetime: 6,rate:100}]
-const enemieTypes = [{name: "Test1",sprite: "url(../images/Sprites/Arrow01.png)",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "url(../images/Sprites/Arrow01.png)",speed: 3,lives: 2,score: 20}]
+const enemyTypes = [{name: "Test1",sprite: "url(../images/Sprites/Arrow01.png)",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "url(../images/Sprites/Arrow02.png)",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "url(../images/Sprites/Arrow03.png)",speed: 1,lives: 5,score: 50}]
 
-const bulletInterval = 200; // 200 ms between shots -- use RATE
+const enemyInterval = 200;
 
-let upgrades = {speed:10,bullets:1} // start with speed 10 and bullet type 1
+let upgrades = {speed:10,bullets:0} // start with speed 10 and bullet type 1
 
-let loop = 0;
+let loopBullet = 0;
+let loopEnemy = 0;
 
 let score = 0;
 let lives = 3;
 let enemyCount = 0;
 let enemiesSpawned = false;
+let lastEnemyCount = 0;
 let round = 0;
 let count = 0;
 
@@ -46,9 +48,9 @@ let state = {
     }
 };
 
-let game = ["3;Test1","10;Test2"]; //amount enemies;type (if multiple types ,)
+let game = ["3;Test1","5;Test2","4;Test3"]; //amount enemies;type (if multiple types ,)
 let roundMulti = 1.25;
-let enemyChance = [3,2];
+let enemyChance = [30,50,75];
 
 let spawnPoints = ["-50;-50",
                     window.innerWidth/2+";-50",
@@ -64,42 +66,63 @@ let currentEnemies = 0;
 let playerStartPos = [(window.innerWidth/2) - (state.player.playerSize[0]/2), (window.innerHeight/2) - (state.player.playerSize[1]/2)] ;
 
 
-addEventListener("keydown",function(inputCode){
-    for (let i = 0; i < keyCodes.length; i++){
-        if (inputCode.code === keyCodes[i]){
-            if (i <= 1){
-                input[Math.ceil((i/2))] = walkspeed[0];
-            }
-            else {
-                input[Math.ceil((i/2)) - 1] = walkspeed[1];
-            }
-        }
-    }
-
-})
-
-addEventListener("keyup",function(inputCode){
-    for (let i = 0; i < keyCodes.length; i++){
-        if (inputCode.code === keyCodes[i]){
-            if (i <= 1){
-                input[Math.ceil((i/2))] = 0;
-            }
-            else {
-                input[Math.ceil((i/2)) - 1] = 0;
-            }
-        }
-    }
-})
-
-addEventListener("mousemove",function(MousePos) {
-    state.mouse.posX = MousePos.clientX;
-    state.mouse.posY = MousePos.clientY;
-})
 
 document.getElementById('buttonPlay').onclick = function() {
     gameEnd();
 }
 
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+    document.addEventListener("touchmove",function(info){
+        //info.preventDefault();
+        [...info.changedTouches].forEach(function(touch){
+            state.mouse.posX = touch.pageX;
+            state.mouse.posY = touch.pageY;
+        })  
+    })
+} 
+else {
+    addEventListener("keydown",function(inputCode){
+        for (let i = 0; i < keyCodes.length; i++){
+            if (inputCode.code === keyCodes[i]){
+                if (i <= 1){
+                    input[Math.ceil((i/2))] = walkspeed[0];
+                }
+                else {
+                    input[Math.ceil((i/2)) - 1] = walkspeed[1];
+                }
+            }
+        }
+    
+    })
+    
+    addEventListener("keyup",function(inputCode){
+        for (let i = 0; i < keyCodes.length; i++){
+            if (inputCode.code === keyCodes[i]){
+                if (i <= 1){
+                    input[Math.ceil((i/2))] = 0;
+                }
+                else {
+                    input[Math.ceil((i/2)) - 1] = 0;
+                }
+            }
+        }
+    })
+    
+    addEventListener("mousemove",function(MousePos) {
+        state.mouse.posX = MousePos.clientX;
+        state.mouse.posY = MousePos.clientY;
+    })
+}
+
+function playAudio(audioFile,looped,volume,randSpeed) {
+    var audio = new Audio(audioFile);
+    audio.loop = looped;
+    audio.volume = volume;
+    if(randSpeed){
+        audio.playbackRate = Math.random() + 0.5
+    }
+    audio.play();
+}
 
 function createPlayer(){
     player = document.createElement("div"); 
@@ -136,9 +159,8 @@ function createPlayer(){
     document.body.appendChild(player);
     document.getElementById("playerDiv").appendChild(gun);
 }
-
 function createEnemy(type,posX,posY,size,angle){
-    enemies.push({type: type, posX: posX, posY: posY, size: size, angle: angle, isalive: true, lives: enemieTypes[enemieTypes.findIndex(item => item.name == type)].lives, draw: function(){
+    enemies.push({type: type, posX: posX, posY: posY, size: size, angle: angle, isalive: true, lives: enemyTypes[enemyTypes.findIndex(item => item.name == type)].lives, draw: function(){
         let enemy = document.createElement("div");
         enemy.className = "enemy"+(enemies.length-1)
         let enemyStyle = enemy.style;
@@ -148,7 +170,7 @@ function createEnemy(type,posX,posY,size,angle){
         enemyStyle.position = "absolute";
         enemyStyle.transform = "rotate("+angle+"deg)";
        // enemyStyle.backgroundColor = "red";
-        enemyStyle.backgroundImage = enemieTypes[enemieTypes.findIndex(item => item.name == type)].sprite;
+        enemyStyle.backgroundImage = enemyTypes[enemyTypes.findIndex(item => item.name == type)].sprite;
         enemyStyle.backgroundSize = size+"px";
         enemyStyle.left = posX+"px";
         enemyStyle.top = posY+"px";
@@ -211,9 +233,12 @@ function gameEnd(){
     state.player.posX = playerStartPos[0];
     state.player.posY = playerStartPos[1];
 
+    upgrades = {speed:10,bullets:0} // start with speed 10 and bullet type 1
+
     enemyCount = 0;
     enemiesSpawned = false;
-    loop = 0;
+    loopBullet = 0;
+    loopEnemy = 0;
     score = 0;
     round = 0;
     lives = 3;
@@ -225,6 +250,8 @@ function gameEnd(){
 
 const gameSetup = function(){
     createPlayer();
+   // playAudio("../sounds/music01.mp3",true,1,false);
+
     initiateUI();
     masterUpdate();
 }
@@ -233,11 +260,17 @@ gameSetup();
 function masterUpdate(){
     if (lives > 0){
         if (enemiesSpawned == false || enemyCount > 0){
-            loop += 16;
-            if (loop >= bulletInterval){
-                loop = 0;
+            loopBullet += 16;
+            loopEnemy += 16;
+            if (loopBullet >= bulletTypes[upgrades.bullets].rate){
+                loopBullet = 0;
                 createBullet(bulletTypes[upgrades.bullets].name,20,state.player.gunPosX - 20/2,state.player.gunPosY - 20/4,state.player.gunRot,1);
                 bullets[bullets.length-1].draw();
+                playAudio("../sounds/shoot01.mp3",false,.1,false);
+                playAudio("../sounds/bullet01.mp3",false,.1,false);
+            }
+            if (loopEnemy >= enemyInterval){
+                loopEnemy = 0;
                 if (game[round]) {
                     if (enemyCount < game[round].split(";")[0] && enemiesSpawned == false) {
                         let spawnpointPos = spawnPoints[Math.floor(Math.random() * spawnPoints.length)].split(";");
@@ -247,10 +280,40 @@ function masterUpdate(){
                         enemies[enemies.length-1].draw();    
                         enemyCount++;
                     } else {
+                        if (enemyCount > lastEnemyCount){
+                            lastEnemyCount = enemyCount;
+                        }
+                        enemiesSpawned = true;
+                    }  
+                }
+                else{
+                    let amountEnemies = Math.ceil(lastEnemyCount * roundMulti);
+                    if (enemyCount < amountEnemies && enemiesSpawned == false) {
+                        let spawnpointPos = spawnPoints[Math.floor(Math.random() * spawnPoints.length)].split(";");
+                        let spawnPointX = parseInt(spawnpointPos[0]);
+                        let spawnPointY = spawnpointPos[1];
+    
+                        let rand = Math.random()*100;
+                        let index = 0;
+    
+                        for(let i = 0; i<enemyChance.length;i++){
+                            if (enemyChance[i] <= rand){
+                                index = i;
+                            }
+                        }
+                        let enemyType = enemyTypes[index].name
+                        createEnemy(enemyType,spawnPointX,spawnPointY,50,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
+                        enemies[enemies.length-1].draw();    
+                        enemyCount++;
+                    } else {
+                        if (enemyCount > lastEnemyCount){
+                            lastEnemyCount = enemyCount;
+                        }           
                         enemiesSpawned = true;
                     }  
                 }
             }
+          
 
             if (enemies.length != 0) {
                 for (let i = 0; i < enemies.length; i++){
@@ -263,8 +326,8 @@ function masterUpdate(){
                         enemies[i].angle = Math.atan2((state.player.posY - enemies[i].posY) ,(state.player.posX - enemies[i].posX));
 
                    
-                        let distX = enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.cos(enemies[i].angle);
-                        let distY = enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.sin(enemies[i].angle);  
+                        let distX = enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.cos(enemies[i].angle);
+                        let distY = enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.sin(enemies[i].angle);  
 
                         enemyDiv.style.left = parseFloat(enemyDiv.style.left) + distX+"px";
                         enemyDiv.style.top = parseFloat(enemyDiv.style.top) + distY+"px";
@@ -282,16 +345,18 @@ function masterUpdate(){
                             if (enemyDiv) {
                                 enemyDiv.classList.remove("enemy"+i);
                                 enemyDiv.parentNode.removeChild(enemyDiv);   
+                                playAudio("../sounds/impact01.mp3",false,.5,false);
                                 enemyCount--;
                             }   
+                            playAudio("../sounds/impact04.mp3",false,1,false);
                             lives--;
                             document.getElementById("uiLives").innerHTML = "Lives: "+lives;      
                         }
                         
                         enemyDiv.style.transform = "rotate("+(enemies[i].angle+(Math.PI/2))+"rad)";
-                        //enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed
-                      //  enemyDiv.style.transform = "translateY(-"+enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed*+"px)";
-                    //  enemyDiv.style.transform =  "rotate("+enemies[i].angle+"deg) translateY(-"+enemieTypes[enemieTypes.findIndex(item => item.name == enemies[i].type)].speed*+"px)"
+                        //enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed
+                      //  enemyDiv.style.transform = "translateY(-"+enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed*+"px)";
+                    //  enemyDiv.style.transform =  "rotate("+enemies[i].angle+"deg) translateY(-"+enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed*+"px)"
                     } 
                 }
             }
@@ -312,16 +377,19 @@ function masterUpdate(){
                                 if (collide){
                                     if (enemies[b].lives > 1) {
                                         enemies[b].lives--;
+                                        playAudio("../sounds/impact02.mp3",false,1,false);
                                     } 
                                     else{
                                         enemies[b].isalive = false;
-                                        score += enemieTypes[enemieTypes.findIndex(item => item.name == enemies[b].type)].score
+                                        score += enemyTypes[enemyTypes.findIndex(item => item.name == enemies[b].type)].score
                                         document.getElementById("uiScore").innerHTML = "Score: "+score;      
 
                                         let enemyDiv = document.body.getElementsByClassName("enemy"+b)[0];
                                         if (enemyDiv) {
                                             enemyDiv.classList.remove("enemy"+b);
                                             enemyDiv.parentNode.removeChild(enemyDiv);   
+                                            playAudio("../sounds/impact01.mp3",false,.5,false);
+                                            playAudio("../sounds/impact02.mp3",false,1,false);
                                             enemyCount--;
                                         }      
                                     } 
@@ -357,6 +425,16 @@ function masterUpdate(){
                 }
             }
             
+            if (state.player.posX <= 0 && input[0] < 0) {
+                input[0] = 0;     
+            } else if (state.player.posX >= window.innerWidth - state.player.playerSize[0] && input[0] > 0) {
+                input[0] = 0;     
+            } else if (state.player.posY <= 0 && input[1] < 0){
+                input[1] = 0;     
+            } else if (state.player.posY >= window.innerHeight - state.player.playerSize[1] && input[1] > 0) {
+                input[1] = 0;            
+            }
+
             if (Math.abs(input[0]) !== Math.abs(input[1])) {
                 state.player.posX = parseInt(state.player.posX) + input[0];
                 state.player.posY = parseInt(state.player.posY) + input[1];
@@ -383,6 +461,7 @@ function masterUpdate(){
         }
         else {
             round++;
+            playAudio("../sounds/round01.mp3",false,1,false);
             enemiesSpawned = false;
             document.getElementById("uiRound").innerHTML = "Round: "+round; 
             masterUpdate();
