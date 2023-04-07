@@ -82,10 +82,83 @@ body{
 
 
 #buttonPlay{
-	color: black;
 	padding: 1vw 1vh;
 }
 
 .uiDown:nth-child(1){
 	background-color: wheat;
+}
+
+.uiCenter{
+    background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
+	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
+	position: absolute;
+	z-index: 100;
+
+	margin-top: 10vh;
+	width: 40vw;
+	margin-left: 110vw;
+	height: 50vh;
+
+
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-around;
+	transition-duration: 1s;
+}
+
+.Shop{
+	display: flex;
+	height: 30vh;
+	width: 37vw;
+	overflow:visible;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+#pauseShop{
+    background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
+	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
+	position: absolute;
+	z-index: 100;
+
+	margin-top: 1vh;
+	width: fit-content;
+	margin-left: 30vw;
+	height: 5vh;
+	right: 1vw;
+
+
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-around;
+	transition-duration: 1s;
+}
+
+
+.Buy1,.Buy2,.Buy3{
+	background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
+	border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
+	height: 30vh;
+	padding: 0vh 1vw;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-around;
+}
+img{
+	width: 8vw;
+	height: 10vh;
+}
+
+input{
+	background-color: black;
+	color: white;
+	padding: 5px 5px;
+	width: 8vw;
 }
