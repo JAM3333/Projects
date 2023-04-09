@@ -91,58 +91,35 @@ document.getElementById('pauseShop').onclick = function() {
 }
 
 document.getElementById('buy1').onclick = function() {
-    if (bulletStats.rate <= 80){
-        document.getElementById('price1').innerHTML = "upgrade complete";
-    } else{
-        if (score >= document.getElementById('price1').innerHTML.split(" ")[0]){
-            let price = parseInt(document.getElementById('price1').innerHTML.split(" ")[0]);
-            bulletStats.rate -= 20;
-            score -= price;
-            if (bulletStats.rate <= 80){
-                document.getElementById('price1').innerHTML = "upgrade complete";
-            } else {
-                document.getElementById('price1').innerHTML = price*2+" score-points";
-            }
-            initiateUI();
-        }
-    }
+    upgrade("rate",-20,80,1)
 }
 
 document.getElementById('buy2').onclick = function() {
-    if (bulletStats.lifetime >= 6.5){
-        document.getElementById('price2').innerHTML = "upgrade complete";
+    upgrade("lifetime",0.5,6.5,2);
+}
+
+document.getElementById('buy3').onclick = function() {
+    upgrade("speed",1,18,3);
+}
+
+function upgrade(type, amount, maxAmount,button){
+    if (bulletStats[type] == maxAmount){
+        document.getElementById('price'+button).innerHTML = "upgrade complete";
     } else{
-        if (score >= document.getElementById('price2').innerHTML.split(" ")[0]){
-            let price = parseInt(document.getElementById('price2').innerHTML.split(" ")[0]);
-            bulletStats.lifetime += 0.5;
+        if (score >= document.getElementById('price'+button).innerHTML.split(" ")[0]){
+            let price = parseInt(document.getElementById('price'+button).innerHTML.split(" ")[0]);
+            bulletStats[type] += amount;
             score -= price;
-            if (bulletStats.lifetime >= 6.5){
-                document.getElementById('price2').innerHTML = "upgrade complete";
+            if (bulletStats[type] == maxAmount){
+                document.getElementById('price'+button).innerHTML = "upgrade complete";
             } else {
-                document.getElementById('price2').innerHTML = price*2+" score-points";
+                document.getElementById('price'+button).innerHTML = price*2+" score-points";
             }
             initiateUI();
         }
     }
 }
 
-document.getElementById('buy3').onclick = function() {
-    if (bulletStats.speed >= 18){
-        document.getElementById('price3').innerHTML = "upgrade complete";
-    } else{
-        if (score >= document.getElementById('price3').innerHTML.split(" ")[0]){
-            let price = parseInt(document.getElementById('price3').innerHTML.split(" ")[0]);
-            bulletStats.speed += 1;
-            score -= price;
-            if (bulletStats.speed >= 18){
-                document.getElementById('price3').innerHTML = "upgrade complete";
-            } else {
-                document.getElementById('price3').innerHTML = price*2+" score-points";
-            }
-            initiateUI();
-        }
-    }
-}
 
 /*if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
     document.addEventListener("touchmove",function(info){
