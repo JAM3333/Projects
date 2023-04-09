@@ -69,7 +69,14 @@ let playerStartPos = [(window.innerWidth/2) - (state.player.playerSize[0]/2), (w
 
 
 document.getElementById('buttonPlay').onclick = function() {
-    gameEnd();
+    if (document.getElementById("play").innerHTML == "Play"){
+        gameSetup();
+        document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
+    } else {
+        gameEnd();
+    }
+
+
 }
 
 document.getElementById('pauseShop').onclick = function() {
@@ -321,12 +328,11 @@ function gameEnd(){
 
 const gameSetup = function(){
     createPlayer();
-   // playAudio("../sounds/music01.mp3",true,1,false);
+    playAudio("../sounds/music01.mp3",true,.3,false);
 
     initiateUI();
     masterUpdate();
 }
-gameSetup();
 
 function masterUpdate(){
     if (!paused) {
@@ -466,9 +472,11 @@ function masterUpdate(){
                                             }      
                                         } 
                                         bullets.splice(bullets.indexOf(bullets[i]),1);
-                                        bulletDiv.classList.remove("bullet"+i);
-                                        bulletDiv.parentNode.removeChild(bulletDiv);
-                    
+                                        if (bulletDiv){
+                                            bulletDiv.classList.remove("bullet"+i);
+                                            bulletDiv.parentNode.removeChild(bulletDiv);    
+                                        }
+                                    
                                         for (let a = i; a < bullets.length+1; a++){
                                             let bulletDivNew = document.body.getElementsByClassName("bullet"+a)[0];
                                             if (bulletDivNew ) {           
@@ -540,8 +548,10 @@ function masterUpdate(){
             }
         }
         else {
-            document.getElementById("uiEndScore").innerHTML = "You reached a score of: "+score+" and ranked #0"
-            document.getElementsByClassName('uiDown')[0].style.transform = "translateY(-27vh)"
+            document.getElementById("play").innerHTML = "Game Over";
+            document.getElementById("buttonPlay").value = "Play Again";
+            document.getElementById("uiEndScore").innerHTML = "You reached a Score of "+score+" and survived until Round "+round+". [Your Rank: #1]"
+            document.getElementsByClassName('uiDown')[0].style.transform = "translateY(0vh)"
         }
     }
 }
