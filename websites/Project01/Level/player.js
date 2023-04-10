@@ -8,7 +8,7 @@ let enemies = [];
 let bullets = []
 
 let bulletStats = {speed: 12,lifetime: 5,rate: 200}
-const enemyTypes = [{name: "Test1",sprite: "url(../images/Sprites/Arrow01.png)",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "url(../images/Sprites/Arrow02.png)",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "url(../images/Sprites/Arrow03.png)",speed: 1,lives: 5,score: 50}]
+const enemyTypes = [{name: "Test1",sprite: "url(../images/Sprites/enemy/Skeleton1.png)",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "url(../images/Sprites/Arrow02.png)",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "url(../images/Sprites/Arrow03.png)",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
 
@@ -39,7 +39,7 @@ let state = {
         posY: 0,
     },
     player: {
-        playerSize: [50,70], // x/y size
+        playerSize: [48,96], // x/y size
         posX: 0,
         posY: 0,
         rot: 0,
@@ -184,8 +184,10 @@ function createPlayer(){
     playerStyle.position = "absolute";
     playerStyle.overflow = "visible"
     playerStyle.zIndex = 2;
-    playerStyle.boxShadow = "0 0 1vh blue";
-    playerStyle.backgroundSize = state.player.playerSize[0]+"px";
+    playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdle.png)";
+    playerStyle.backgroundRepeat = "no-repeat"
+    playerStyle.backgroundPositionX = -state.player.playerSize[0]/2+"px";
+    playerStyle.backgroundSize = state.player.playerSize[1]+"px";
 
     state.player.posX = playerStartPos[0];
     state.player.posY = playerStartPos[1];
@@ -209,19 +211,21 @@ function createPlayer(){
     document.body.appendChild(player);
     document.getElementById("playerDiv").appendChild(gun);
 }
-function createEnemy(type,posX,posY,size,angle){
-    enemies.push({type: type, posX: posX, posY: posY, size: size, angle: angle, isalive: true, lives: enemyTypes[enemyTypes.findIndex(item => item.name == type)].lives, draw: function(){
+function createEnemy(type,posX,posY,sizeX,sizeY,angle){
+    enemies.push({type: type, posX: posX, posY: posY, sizeX: sizeX,sizeY: sizeY, angle: angle, isalive: true, lives: enemyTypes[enemyTypes.findIndex(item => item.name == type)].lives, draw: function(){
         let enemy = document.createElement("div");
         enemy.className = "enemy"+(enemies.length-1)
         let enemyStyle = enemy.style;
 
-        enemyStyle.height = size+"px";
-        enemyStyle.width = size+"px";
+        enemyStyle.height = sizeY+"px";
+        enemyStyle.width = sizeX+"px";
         enemyStyle.position = "absolute";
-        enemyStyle.transform = "rotate("+angle+"deg)";
+       // enemyStyle.transform = "rotate("+angle+"deg)";
        // enemyStyle.backgroundColor = "red";
         enemyStyle.backgroundImage = enemyTypes[enemyTypes.findIndex(item => item.name == type)].sprite;
-        enemyStyle.backgroundSize = size+"px";
+        enemyStyle.backgroundSize = sizeY+"px";
+        enemyStyle.backgroundRepeat = "no-repeat"
+        enemyStyle.backgroundPositionX = -sizeX/2+"px";        
         enemyStyle.left = posX+"px";
         enemyStyle.top = posY+"px";
         document.body.appendChild(enemy);
@@ -331,7 +335,7 @@ function masterUpdate(){
                             let spawnpointPos = spawnPoints[Math.floor(Math.random() * spawnPoints.length)].split(";");
                             let spawnPointX = parseInt(spawnpointPos[0]);
                             let spawnPointY = spawnpointPos[1];
-                            createEnemy(game[round].split(";")[1],spawnPointX,spawnPointY,50,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
+                            createEnemy(game[round].split(";")[1],spawnPointX,spawnPointY,48,96,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
                             enemies[enemies.length-1].draw();    
                             enemyCount++;
                         } else {
@@ -357,7 +361,7 @@ function masterUpdate(){
                                 }
                             }
                             let enemyType = enemyTypes[index].name
-                            createEnemy(enemyType,spawnPointX,spawnPointY,50,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
+                            createEnemy(enemyType,spawnPointX,spawnPointY,48,96,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI);
                             enemies[enemies.length-1].draw();    
                             enemyCount++;
                         } else {
@@ -390,10 +394,7 @@ function masterUpdate(){
                             enemies[i].posX = parseFloat(enemyDiv.style.left);
                             enemies[i].posY = parseFloat(enemyDiv.style.top);
     
-    
-                           //console.log(Math.floor(enemies[i].angle))
-                           /// console.log(state.player.posX,state.player.posY,enemies[i].angle,distX,distY)
-                            var collide = collision(state.player.posX,enemies[i].posX,state.player.playerSize[0],enemies[i].size,state.player.posY,enemies[i].posY,state.player.playerSize[1],enemies[i].size);
+                            var collide = collision(state.player.posX,enemies[i].posX,state.player.playerSize[0],enemies[i].sizeX,state.player.posY,enemies[i].posY,state.player.playerSize[1],enemies[i].sizeY);
                             if (collide){
                                 enemies[i].isalive = false;
                                 let enemyDiv = document.body.getElementsByClassName("enemy"+i)[0];
@@ -408,10 +409,7 @@ function masterUpdate(){
                                 document.getElementById("uiLives").innerHTML = "Lives: "+lives;      
                             }
                             
-                            enemyDiv.style.transform = "rotate("+(enemies[i].angle+(Math.PI/2))+"rad)";
-                            //enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed
-                          //  enemyDiv.style.transform = "translateY(-"+enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed*+"px)";
-                        //  enemyDiv.style.transform =  "rotate("+enemies[i].angle+"deg) translateY(-"+enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed*+"px)"
+                           // enemyDiv.style.transform = "rotate("+(enemies[i].angle+(Math.PI/2))+"rad)";
                         } 
                     }
                 }
@@ -428,7 +426,7 @@ function masterUpdate(){
                             
                             for (let b = 0; b < enemies.length;b++) {
                                 if (enemies[b].isalive == true && bullets[i]){
-                                    var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].size,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].size);
+                                    var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].sizeX,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].sizeY);
                                     if (collide){
                                         if (enemies[b].lives > 1) {
                                             enemies[b].lives--;
