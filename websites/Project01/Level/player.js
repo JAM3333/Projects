@@ -447,7 +447,7 @@ function masterUpdate(){
                                             }      
                                         } 
                                         bullets.splice(bullets.indexOf(bullets[i]),1);
-                                        if (bulletDiv){
+                                        if (bulletDiv && bulletDiv.parentNode){
                                             bulletDiv.classList.remove("bullet"+i);
                                             bulletDiv.parentNode.removeChild(bulletDiv);    
                                         }
