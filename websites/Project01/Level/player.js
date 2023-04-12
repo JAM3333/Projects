@@ -328,7 +328,7 @@ function masterUpdate(){
                 loopEnemy += 16;
                 if (loopBullet >= bulletStats.rate){
                     loopBullet = 0;
-                    createBullet(20,state.player.gunPosX,state.player.gunPosY,state.player.gunRot,1);
+                    createBullet(20,state.player.gunPosX - 20/2,state.player.gunPosY - 20/4,state.player.gunRot,1);
                     bullets[bullets.length-1].draw();
                     playAudio("../sounds/shoot01.mp3",false,.1,false);
                     playAudio("../sounds/bullet01.mp3",false,.1,false);
