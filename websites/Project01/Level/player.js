@@ -9,9 +9,10 @@ let enemies = [];
 let bullets = [];
 
 let bulletStats = {speed: 12,lifetime: 5,rate: 200}
-const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/Skeleton1.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/Arrow02.png",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "../images/Sprites/Arrow03.png",speed: 1,lives: 5,score: 50}]
+const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/Skeleton.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "../images/Sprites/Arrow0.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
+const enemyAnimFrameChange = 500;
 
 var canvas = document.getElementById("canvasElement");
 var context = canvas.getContext("2d");
@@ -230,6 +231,8 @@ class Enemy{
         this.lives = enemyTypes[enemyTypes.findIndex(item => item.name == type)].lives;
         this.backgroundImage = new Image();
         this.backgroundImage.src = enemyTypes[enemyTypes.findIndex(item => item.name == type)].sprite;
+        this.animFrame = 1;
+        this.timeSinceFrame = 0;
     }
     draw(){
         console.log(this.backgroundImage)
@@ -325,7 +328,7 @@ function masterUpdate(){
                 loopEnemy += 16;
                 if (loopBullet >= bulletStats.rate){
                     loopBullet = 0;
-                    createBullet(20,state.player.gunPosX - 20/2,state.player.gunPosY - 20/4,state.player.gunRot,1);
+                    createBullet(20,state.player.gunPosX,state.player.gunPosY,state.player.gunRot,1);
                     bullets[bullets.length-1].draw();
                     playAudio("../sounds/shoot01.mp3",false,.1,false);
                     playAudio("../sounds/bullet01.mp3",false,.1,false);
@@ -389,8 +392,19 @@ function masterUpdate(){
     
                             enemies[i].posX = parseFloat(enemies[i].posX) + distX;
                             enemies[i].posY = parseFloat(enemies[i].posY) + distY;
-    
-                            
+
+                            enemies[i].timeSinceFrame += 16 * enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed;
+
+                            if (enemies[i].timeSinceFrame >= enemyAnimFrameChange) {
+                                enemies[i].timeSinceFrame = 0;
+                                if (enemies[i].animFrame == 1){
+                                    enemies[i].animFrame = 2;
+                                }else{
+                                    enemies[i].animFrame = 1;
+                                }
+                            }
+                            enemies[i].backgroundImage.src = (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).substring(0, (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).length - 4) + enemies[i].animFrame +".png";
+                           // enemies[i].backgroundImage.transform = "scaleX(-1)";
                             var collide = collision(state.player.posX,enemies[i].posX,state.player.playerSize[0],enemies[i].sizeX,state.player.posY,enemies[i].posY,state.player.playerSize[1],enemies[i].sizeY);
                             if (collide){
                                 enemies[i].isalive = false;
@@ -400,7 +414,6 @@ function masterUpdate(){
                                 lives--;
                                 document.getElementById("uiLives").innerHTML = "Lives: "+lives;      
                             }
-                            //enemyDiv.style.transform = "rotate("+(enemies[i].angle+(Math.PI/2))+"rad)";
                             context.drawImage(enemies[i].backgroundImage,enemies[i].posX,enemies[i].posY,enemies[i].sizeX,enemies[i].sizeY);
                         } 
                     }
