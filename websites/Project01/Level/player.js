@@ -9,7 +9,7 @@ let enemies = [];
 let bullets = [];
 
 let bulletStats = {speed: 12,lifetime: 5,rate: 200};
-const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "../images/Sprites/Arrow0.png",speed: 1,lives: 5,score: 50}]
+const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
 const enemyAnimFrameChange = 500;
@@ -31,7 +31,6 @@ let enemyCount = 0;
 let enemiesSpawned = false;
 let lastEnemyCount = 0;
 let round = 0;
-let count = 0;
 
 
 let keyCodes = ["KeyD","KeyS","KeyA","KeyW"];
@@ -385,7 +384,6 @@ function masterUpdate(){
                     for (let i = 0; i < enemies.length; i++){
                         if (enemies[i].isalive == true ) {
                             enemies[i].angle = Math.atan2((state.player.posY - enemies[i].posY) ,(state.player.posX - enemies[i].posX));
-    
                        
                             let distX = enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.cos(enemies[i].angle);
                             let distY = enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.sin(enemies[i].angle);  
@@ -403,8 +401,14 @@ function masterUpdate(){
                                     enemies[i].animFrame = 1;
                                 }
                             }
-                            enemies[i].backgroundImage.src = (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).substring(0, (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).length - 4) + enemies[i].animFrame +".png";
-                           // enemies[i].backgroundImage.transform = "scaleX(-1)";
+
+                            if (enemies[i].angle <= Math.PI/2 && enemies[i].angle >= -Math.PI/2){
+                                enemies[i].backgroundImage.src = (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).substring(0, (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).length - 4) + enemies[i].animFrame +".png";
+                            }
+                            else {
+                                enemies[i].backgroundImage.src = (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).substring(0, (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).length - 4) +"Invert"+ enemies[i].animFrame +".png";
+                            }
+
                             var collide = collision(state.player.posX,enemies[i].posX,state.player.playerSize[0],enemies[i].sizeX,state.player.posY,enemies[i].posY,state.player.playerSize[1],enemies[i].sizeY);
                             if (collide){
                                 enemies[i].isalive = false;
