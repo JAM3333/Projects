@@ -116,6 +116,8 @@ document.getElementById('buy3').onclick = function() {
     upgrade("speed",1,18,3);
 }
 
+
+
 function upgrade(type, amount, maxAmount,button){
     if (bulletStats[type] == maxAmount){
         document.getElementById('price'+button).innerHTML = "upgrade complete";
@@ -136,6 +138,7 @@ function upgrade(type, amount, maxAmount,button){
 
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+    document.getElementsByClassName("btnMobile")[0].style.display = "flex";
     document.addEventListener("touchmove",function(info){
         info.preventDefault();
         [...info.changedTouches].forEach(function(touch){

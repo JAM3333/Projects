@@ -170,3 +170,25 @@ input{
 	padding: 5px 5px;
 	width: 8vw;
 }
+
+.btnMobile{
+	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
+	position: absolute;
+	z-index: 100;
+
+	width: 25vw;
+	height: 20vh;
+
+	top: 70vh;
+	left: 37.5vw;
+
+	display:none;
+	align-items: center;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+#btnUp,#btnLeft,#btnDown,#btnRight {
+	width: 10vw;
+	height: 5vh;
+}
