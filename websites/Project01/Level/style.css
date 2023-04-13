@@ -82,6 +82,11 @@ body{
 	transition-duration: 1s;
 }
 
+#uiLives{
+	transform-origin: right;
+	transition-duration: 1s;
+}
+
 
 
 #buttonPlay{

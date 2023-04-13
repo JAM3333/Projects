@@ -31,6 +31,7 @@ let enemyCount = 0;
 let enemiesSpawned = false;
 let lastEnemyCount = 0;
 let round = 0;
+let playing = false;
 
 
 let keyCodes = ["KeyD","KeyS","KeyA","KeyW"];
@@ -77,10 +78,16 @@ let playerStartPos = [(window.innerWidth/2) - (state.player.playerSize[0]/2), (w
 
 document.getElementById('buttonPlay').onclick = function() {
     if (document.getElementById("play").innerHTML == "Play"){
-        gameSetup();
+        if (!playing){
+            playing = true;
+            gameSetup();
+        }
         document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
     } else {
-        gameEnd();
+        if (playing){
+            playing = false;
+            gameEnd();
+        }
     }
 
 
@@ -275,6 +282,7 @@ function initiateUI(){
 
 function gameEnd(){
     document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(80vw)"
+    document.getElementById("uiLives").style.transform = "scale(1)";        
     document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
     document.getElementById('price1').innerHTML = "100 score-points";
     document.getElementById('price2').innerHTML = "100 score-points";
@@ -413,10 +421,14 @@ function masterUpdate(){
                             if (collide){
                                 enemies[i].isalive = false;
                                 playAudio("../sounds/impact01.mp3",false,.5,false);
-                                playAudio("../sounds/impact04.mp3",false,1,false);
+                                playAudio("../sounds/impact05.mp3",false,1,false);
+
                                 enemyCount--;
                                 lives--;
-                                document.getElementById("uiLives").innerHTML = "Lives: "+lives;      
+
+                                document.getElementById("uiLives").innerHTML = "Lives: "+lives;   
+                                document.getElementById("uiLives").style.transform = "scale(1.7)";        
+     
                             }
                             context.drawImage(enemies[i].backgroundImage,enemies[i].posX,enemies[i].posY,enemies[i].sizeX,enemies[i].sizeY);
                         } 
