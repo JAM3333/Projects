@@ -8,16 +8,8 @@ let gunStyle;
 let enemies = [];
 let bullets = [];
 
-let bulletStats = {speed: 12,lifetime: 5,rate: 200}
-<<<<<<< Updated upstream
-const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/Skeleton.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "../images/Sprites/Arrow0.png",speed: 1,lives: 5,score: 50}]
-=======
-<<<<<<< HEAD
-const enemyTypes = [{name: "Test1",sprite: "url(../images/Sprites/enemy/SkeletonSmall/SkeletonWalk1.png)",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "url(../images/Sprites/enemy/ZombieSmall/ZombieWalk1.png)",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "url(../images/Sprites/Arrow03.png)",speed: 1,lives: 5,score: 50}]
-=======
-const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/Skeleton.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "../images/Sprites/Arrow0.png",speed: 1,lives: 5,score: 50}]
->>>>>>> c7c4a49bec563fed53671254e4fe15f090db4508
->>>>>>> Stashed changes
+let bulletStats = {speed: 12,lifetime: 5,rate: 200};
+const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "../images/Sprites/Arrow0.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
 const enemyAnimFrameChange = 500;
