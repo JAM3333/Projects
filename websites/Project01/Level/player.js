@@ -115,6 +115,22 @@ document.getElementById('btnSettings').onclick = function() {
         masterUpdate();
     }
 }
+document.getElementById('set01').onclick = function(){
+    if (paused){
+        if (device == 1 && playing){
+            document.getElementsByClassName("btnMobile")[0].style.display = "flex";
+        }        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
+        paused = false;
+        masterUpdate();
+    }
+}
+document.getElementById('set02').onclick = function(){
+    if (playing){
+        playing = false;
+        gameEnd();
+    }
+}
+
 
 document.getElementById('buy1').onclick = function() {
     upgrade("rate",-20,80,1)

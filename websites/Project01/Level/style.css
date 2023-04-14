@@ -106,9 +106,11 @@ body{
 	z-index: 100;
 
 	margin-top: 10vh;
-	width: 70vw;
 	margin-left: 110vw;
-	height: 50vh;
+	padding-bottom: 1vh;
+
+	width: 70vw;
+	height: fit-content;
 
 
 	display: flex;
@@ -128,16 +130,11 @@ body{
 	justify-content: space-around;
 }
 
-#Settings{
+.Settings{
     background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
-	position: absolute;
 	z-index: 100;
 
-	margin-top: 1vh;
 	width: fit-content;
-	margin-left: 30vw;
-	height: 5vh;
-	right: 1vw;
 
 
 	display: flex;
@@ -194,6 +191,20 @@ input{
 
 #btnSettings{
 	background-color: transparent;
-	width: 10vw;
+	width: 6vw;
 	margin-left: 1vw;
 }
+
+.uiCenter>h2{
+	font-size: 2vh;
+	margin-top: 1.5vh;
+}
+
+.Settings>input{
+	font-size: 2vh;
+	width: 60vw;
+	height: 6vh;
+	margin-top: 2vh;
+}
+
+
