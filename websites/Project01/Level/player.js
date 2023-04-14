@@ -11,10 +11,10 @@ let enemies = [];
 let bullets = [];
 
 
-let currentPrice = 100; // start from 100 score
-let priceIncrease = 2; // x2 every upgrade
-let upgrades = {plrSpeed: 10,lives: 3,speed: 15,lifetime: 5,rate: 300,damage: 1};
-let upgradeNames = ["Player Speed","Player Lives","Bullet Speed","Firerate","Bullet Lifetime","Bullet Damage"];
+let currentPrice = 10; // start from 100 score
+let priceIncrease = 1.7; // x2 every upgrade
+let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",rate: "300;-30;150",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
+let upgradeNames = ["Player Speed","Player Lives","Firerate","Bullet Speed","Bullet Lifetime","Bullet Damage"];
 let upgradeCycle = 0;
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
@@ -155,7 +155,13 @@ document.getElementById('buy3').onclick = function() {
 
 function upgrade(state,index){
     if (state == false){
-        if (upgradeCycle == upgradeNames.length-1){
+        if (upgrades[Object.keys(upgrades)[index]].split(";")[0] != upgrades[Object.keys(upgrades)[index]].split(";")[2]){        
+            upgrades[Object.keys(upgrades)[index]] = (parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[0])+parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[1]))+";"+upgrades[Object.keys(upgrades)[index]].split(";")[1]+";"+upgrades[Object.keys(upgrades)[index]].split(";")[2];
+            console.log(upgrades[Object.keys(upgrades)[index]]);
+        }
+
+
+        if (upgradeCycle == upgradeNames.length-3){
             upgradeCycle = 0;
         } 
         else{
@@ -193,25 +199,25 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phon
         })  
     },{passive:false});
     document.getElementById("btnUp").ontouchstart = function(){
-        input[1] = -upgrades.plrSpeed;
+        input[1] = -parseInt(upgrades.plrSpeed.split(";")[0]);
     }
     document.getElementById("btnUp").ontouchend = function(){
         input[1] = 0;
     }
     document.getElementById("btnRight").ontouchstart = function(){
-        input[0] = upgrades.plrSpeed;
+        input[0] = parseInt(upgrades.plrSpeed.split(";")[0]);
     }
     document.getElementById("btnRight").ontouchend = function(){
         input[0] = 0;
     }
     document.getElementById("btnDown").ontouchstart = function(){
-        input[1] = upgrades.plrSpeed;
+        input[1] = parseInt(upgrades.plrSpeed.split(";")[0]);
     }
     document.getElementById("btnDown").ontouchend = function(){
         input[1] = 0;
     }
     document.getElementById("btnLeft").ontouchstart = function(){
-        input[0] = -upgrades.plrSpeed;
+        input[0] = -parseInt(upgrades.plrSpeed.split(";")[0]);
     }
     document.getElementById("btnLeft").ontouchend = function(){
         input[0] = 0;
@@ -222,10 +228,10 @@ else {
         for (let i = 0; i < keyCodes.length; i++){
             if (inputCode.code === keyCodes[i]){
                 if (i <= 1){
-                    input[Math.ceil((i/2))] = upgrades.plrSpeed;
+                    input[Math.ceil((i/2))] = parseInt(upgrades.plrSpeed.split(";")[0]);
                 }
                 else {
-                    input[Math.ceil((i/2)) - 1] = -upgrades.plrSpeed;
+                    input[Math.ceil((i/2)) - 1] = -parseInt(upgrades.plrSpeed.split(";")[0]);
                 }
             }
         }
@@ -284,18 +290,16 @@ function createPlayer(){
     gun = document.createElement("div")
     gunStyle = gun.style;
     
-    gunStyle.width = state.player.playerSize[0]/3+"px";
-    gunStyle.height = state.player.playerSize[1]/1.5+"px";
+    gunStyle.width = state.player.playerSize[0]/1.5+"px";
+    gunStyle.height = state.player.playerSize[1]+"px";
     gunStyle.position = "absolute";
-    gunStyle.transformOrigin = "50% 100% 0px"
-    gunStyle.backgroundColor = "darkblue";
-    gunStyle.backgroundImage = "url(../images/Sprites/Arrow01.png)";
-    //gunStyle.backgroundImage = "url(../images/Sprites/Arrow01.png)";
-    gunStyle.backgroundSize = state.player.playerSize[0]/3+"px";
+    gunStyle.transformOrigin = "60% 70% 0px"
+    gunStyle.backgroundImage = "url(../images/Sprites/player/gun.png)";
+    gunStyle.backgroundSize = state.player.playerSize[0]/1.5+"px";
     gunStyle.zIndex = 4;
 
-    state.player.gunPosX = playerStartPos[0] + state.player.playerSize[0]/6;
-    state.player.gunPosY = playerStartPos[1] + state.player.playerSize[0]/3 - state.player.playerSize[1]/1.5;
+    state.player.gunPosX = playerStartPos[0] + state.player.playerSize[0]/3;
+    state.player.gunPosY = playerStartPos[1] - state.player.playerSize[1]/2;
 
     document.body.appendChild(player);
     document.getElementById("playerDiv").appendChild(gun);
@@ -348,7 +352,7 @@ function collision(posX1,posX2,width1,width2,posY1,posY2,height1,height2) {
 }
 
 function initiateUI(){
-    document.getElementById("uiLives").innerHTML = "Lives: "+upgrades.lives;      
+    document.getElementById("uiLives").innerHTML = "Lives: "+parseInt(upgrades.lives.split(";")[0]);      
     document.getElementById("uiScore").innerHTML = "Score: "+score;     
     document.getElementById("uiRound").innerHTML = "Round: "+round; 
 }
@@ -375,7 +379,7 @@ function gameEnd(){
     state.player.posX = playerStartPos[0];
     state.player.posY = playerStartPos[1];
 
-    upgrades = {plrSpeed: 10,lives: 3,speed: 15,lifetime: 5,rate: 300,damage: 1};
+    let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",rate: "300;-30;150",damage: "1;1;3"};
 
     enemyCount = 0;
     enemiesSpawned = false;
@@ -402,11 +406,11 @@ const gameSetup = function(){
 
 function masterUpdate(){
     if (!paused) {
-        if (upgrades.lives > 0){
+        if (parseInt(upgrades.lives.split(";")[0]) > 0){
             if (enemiesSpawned == false || enemyCount > 0){
                 loopBullet += 16;
                 loopEnemy += 16;
-                if (loopBullet >= upgrades.rate){
+                if (loopBullet >=  parseInt(upgrades.rate.split(";")[0])){
                     loopBullet = 0;
                     createBullet(20,state.player.gunPosX ,state.player.gunPosY,state.player.gunRot,1);
                     bullets[bullets.length-1].draw();
@@ -496,9 +500,10 @@ function masterUpdate(){
                                 playAudio("../sounds/impact05.mp3",false,1,false);
 
                                 enemyCount--;
-                                upgrades.lives--;
-
-                                document.getElementById("uiLives").innerHTML = "Lives: "+upgrades.lives;   
+                                let livesLeft = (parseInt(upgrades.lives.split(";")[0])) - 1;
+                                upgrades.lives = livesLeft+";"+upgrades.lives.split(";")[1]+";"+upgrades.lives.split(";")[2];
+                                console.log(upgrades.lives)
+                                document.getElementById("uiLives").innerHTML = "Lives: "+parseInt(upgrades.lives.split(";")[0]);   
                                 document.getElementById("uiLives").style.transform = "scale(1.7)";        
      
                             }
@@ -511,7 +516,7 @@ function masterUpdate(){
                     for (let i = 0; i < bullets.length; i++){
                         let bulletDiv = document.body.getElementsByClassName("bullet"+i)[0];
                         if (bulletDiv) {
-                            bulletDiv.style.transform = bulletDiv.style.transform + "translateY(-"+upgrades.speed+"px)";
+                            bulletDiv.style.transform = bulletDiv.style.transform + "translateY(-"+parseInt(upgrades.speed.split(";")[0])+"px)";
     
                             bullets[i].aliveTime += 1/16
                             bullets[i].posX = bulletDiv.getBoundingClientRect().x
@@ -521,7 +526,7 @@ function masterUpdate(){
                                 if (enemies[b].isalive == true && bullets[i]){
                                     var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].sizeX,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].sizeY);
                                     if (collide){
-                                        enemies[b].lives -= upgrades.damage;
+                                        enemies[b].lives -= parseInt(upgrades.damage.split(";")[0]);
                                         if (enemies[b].lives >= 1) {
                                             playAudio("../sounds/impact02.mp3",false,1,false);
                                         } 
@@ -552,7 +557,7 @@ function masterUpdate(){
                                 }
                             }
     
-                            if (bullets[i] && bullets[i].aliveTime >= upgrades.lifetime){
+                            if (bullets[i] && bullets[i].aliveTime >= parseInt(upgrades.lifetime.split(";")[0])){
                                 if (bulletDiv) {
                                     bullets.splice(bullets.indexOf(bullets[i]),1);
                                     bulletDiv.classList.remove("bullet"+i);
@@ -589,9 +594,9 @@ function masterUpdate(){
                     state.player.posY = parseInt(state.player.posY) + input[1] / 1.5;
                 }  
     
-                state.player.gunPosX = state.player.posX + state.player.playerSize[0]/6;
-                state.player.gunPosY = state.player.posY + state.player.playerSize[0]/1.5 + state.player.playerSize[0]/6;
-    
+                state.player.gunPosX = state.player.posX + state.player.playerSize[0]/3;
+                state.player.gunPosY = state.player.posY + state.player.playerSize[1]/2;
+ 
                 state.player.gunRot = Math.atan2(state.mouse.posX - state.player.gunPosX,-(state.mouse.posY - state.player.gunPosY))*180/Math.PI;
     
     
