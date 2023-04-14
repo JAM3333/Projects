@@ -11,15 +11,15 @@ let enemies = [];
 let bullets = [];
 
 
-let currentPrice = 10; // start from 100 score
-let priceIncrease = 1.7; // x2 every upgrade
+let currentPrice = 100; // start from 100 score
+let priceIncrease = 2; // x2 every upgrade
 let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",rate: "300;-30;150",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
 let upgradeNames = ["Player Speed","Player Lives","Firerate","Bullet Speed","Bullet Lifetime","Bullet Damage"];
 let upgradeCycle = 0;
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
-const enemyAnimFrameChange = 500;
+const AnimFrameChange = 500;
 
 const canvas = document.getElementById("canvasElement");
 const context = canvas.getContext("2d");
@@ -54,10 +54,11 @@ let state = {
         playerSize: [48,96], // x/y size
         posX: 0,
         posY: 0,
-        rot: 0,
         gunPosX: 0,
         gunPosY: 0,
-        gunRot: 0
+        gunRot: 0,
+        animFrame: 1,
+        timeSinceFrame: 0
     }
 };
 
@@ -378,8 +379,10 @@ function gameEnd(){
 
     state.player.posX = playerStartPos[0];
     state.player.posY = playerStartPos[1];
+    state.player.timeSinceFrame = 0;
+    state.player.animFrame = 1;
 
-    let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",rate: "300;-30;150",damage: "1;1;3"};
+    upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",rate: "300;-30;150",damage: "1;1;3"};
 
     enemyCount = 0;
     enemiesSpawned = false;
@@ -387,7 +390,6 @@ function gameEnd(){
     loopEnemy = 0;
     score = 0;
     round = 0;
-    upgrades.lives = 3;
 
     paused = false;
     playing = true;
@@ -477,7 +479,7 @@ function masterUpdate(){
 
                             enemies[i].timeSinceFrame += 16 * enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed;
 
-                            if (enemies[i].timeSinceFrame >= enemyAnimFrameChange) {
+                            if (enemies[i].timeSinceFrame >= AnimFrameChange) {
                                 enemies[i].timeSinceFrame = 0;
                                 if (enemies[i].animFrame == 1){
                                     enemies[i].animFrame = 2;
@@ -598,7 +600,32 @@ function masterUpdate(){
                 state.player.gunPosY = state.player.posY + state.player.playerSize[1]/2;
  
                 state.player.gunRot = Math.atan2(state.mouse.posX - state.player.gunPosX,-(state.mouse.posY - state.player.gunPosY))*180/Math.PI;
-    
+
+                state.player.timeSinceFrame += 2 * parseInt(upgrades.speed.split(";")[0]);
+                if (state.player.timeSinceFrame >= AnimFrameChange) {
+                    state.player.timeSinceFrame = 0;
+                    if (state.player.animFrame == 1){
+                        state.player.animFrame = 2;
+                    }else{
+                        state.player.animFrame = 1;
+                    }
+                }
+                if (input[0] == 0 && input[1] == 0){
+                    if (state.player.gunRot <= 180 && state.player.gunRot >= 0){
+                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdle.png";
+                    }
+                    else {
+                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdleInverted.png";
+                    }
+                } else {
+                    if (state.player.gunRot <= 180 && state.player.gunRot >= 0){
+                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerMove" + state.player.animFrame +".png";
+                    }
+                    else {
+                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerMove" + state.player.animFrame +"Inverted.png";
+                    }
+                }
+                
     
                 gunStyle.transform = "rotate("+state.player.gunRot+"deg)"
                 playerStyle.left = state.player.posX+"px";
