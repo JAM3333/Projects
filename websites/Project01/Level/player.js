@@ -5,6 +5,8 @@ let gun;
 let playerStyle;
 let gunStyle;
 
+let device = 0;
+
 let enemies = [];
 let bullets = [];
 
@@ -77,8 +79,12 @@ let playerStartPos = [(window.innerWidth/2) - (state.player.playerSize[0]/2), (w
 
 
 document.getElementById('buttonPlay').onclick = function() {
+    console.log(    document.getElementById("play").innerHTML)
     if (document.getElementById("play").innerHTML == "Play"){
         if (!playing){
+            if (device == 1){
+                document.getElementsByClassName("btnMobile")[0].style.display = "flex";
+            }
             playing = true;
             gameSetup();
         }
@@ -93,12 +99,18 @@ document.getElementById('buttonPlay').onclick = function() {
 
 }
 
-document.getElementById('pauseShop').onclick = function() {
+document.getElementById('btnSettings').onclick = function() {
     if (!paused){
-        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-80vw)";
+        if (device == 1){
+            document.getElementsByClassName("btnMobile")[0].style.display = "none";
+        }
+        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
         paused = true;
     } else {
-        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(80vw)";
+        if (device == 1 && playing){
+            document.getElementsByClassName("btnMobile")[0].style.display = "flex";
+        }
+        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
         paused = false;
         masterUpdate();
     }
@@ -138,14 +150,38 @@ function upgrade(type, amount, maxAmount,button){
 
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
-    document.getElementsByClassName("btnMobile")[0].style.display = "flex";
+    device = 1;
     document.addEventListener("touchmove",function(info){
         info.preventDefault();
         [...info.changedTouches].forEach(function(touch){
             state.mouse.posX = touch.pageX;
             state.mouse.posY = touch.pageY;
         })  
-    },{passive:false})
+    },{passive:false});
+    document.getElementById("btnUp").ontouchstart = function(){
+        input[1] = walkspeed[1];
+    }
+    document.getElementById("btnUp").ontouchend = function(){
+        input[1] = 0;
+    }
+    document.getElementById("btnRight").ontouchstart = function(){
+        input[0] = walkspeed[0];
+    }
+    document.getElementById("btnRight").ontouchend = function(){
+        input[0] = 0;
+    }
+    document.getElementById("btnDown").ontouchstart = function(){
+        input[1] = walkspeed[0];
+    }
+    document.getElementById("btnDown").ontouchend = function(){
+        input[1] = 0;
+    }
+    document.getElementById("btnLeft").ontouchstart = function(){
+        input[0] = walkspeed[1];
+    }
+    document.getElementById("btnLeft").ontouchend = function(){
+        input[0] = 0;
+    }
 } 
 else { 
     addEventListener("keydown",function(inputCode){
@@ -182,13 +218,15 @@ else {
 }
 
 function playAudio(audioFile,looped,volume,randSpeed) {
-    var audio = new Audio(audioFile);
-    audio.loop = looped;
-    audio.volume = volume;
-    if(randSpeed){
-        audio.playbackRate = Math.random() + 0.5
+    if (device == 0){
+        var audio = new Audio(audioFile);
+        audio.loop = looped;
+        audio.volume = volume;
+        if(randSpeed){
+            audio.playbackRate = Math.random() + 0.5
+        }
+        audio.play();
     }
-    audio.play();
 }
 
 function createPlayer(){
@@ -284,7 +322,7 @@ function initiateUI(){
 }
 
 function gameEnd(){
-    document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(80vw)"
+    document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)"
     document.getElementById("uiLives").style.transform = "scale(1)";        
     document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
     document.getElementById('price1').innerHTML = "100 score-points";
@@ -317,6 +355,7 @@ function gameEnd(){
     lives = 3;
 
     paused = false;
+    playing = true;
     initiateUI();
     masterUpdate();
 }
