@@ -11,10 +11,10 @@ let enemies = [];
 let bullets = [];
 
 
-let currentPrice = 100; // start from 100 score
-let priceIncrease = 2; // x2 every upgrade
-let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",rate: "300;-30;150",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
-let upgradeNames = ["Player Speed","Player Lives","Bullet Speed","Firerate","Bullet Lifetime","Bullet Damage"];
+let currentPrice = 10; // start from 100 score
+let priceIncrease = 1.7; // x2 every upgrade
+let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",rate: "300;-30;150",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
+let upgradeNames = ["Player Speed","Player Lives","Firerate","Bullet Speed","Bullet Lifetime","Bullet Damage"];
 let upgradeCycle = 0;
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
@@ -155,7 +155,13 @@ document.getElementById('buy3').onclick = function() {
 
 function upgrade(state,index){
     if (state == false){
-        if (upgradeCycle == upgradeNames.length-1){
+        if (upgrades[Object.keys(upgrades)[index]].split(";")[0] != upgrades[Object.keys(upgrades)[index]].split(";")[2]){        
+            upgrades[Object.keys(upgrades)[index]] = (parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[0])+parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[1]))+";"+upgrades[Object.keys(upgrades)[index]].split(";")[1]+";"+upgrades[Object.keys(upgrades)[index]].split(";")[2];
+            console.log(upgrades[Object.keys(upgrades)[index]]);
+        }
+
+
+        if (upgradeCycle == upgradeNames.length-3){
             upgradeCycle = 0;
         } 
         else{
@@ -373,7 +379,7 @@ function gameEnd(){
     state.player.posX = playerStartPos[0];
     state.player.posY = playerStartPos[1];
 
-    upgrades = {plrSpeed: 10,lives: 3,speed: 15,lifetime: 5,rate: 300,damage: 1};
+    let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",rate: "300;-30;150",damage: "1;1;3"};
 
     enemyCount = 0;
     enemiesSpawned = false;
@@ -495,8 +501,8 @@ function masterUpdate(){
 
                                 enemyCount--;
                                 let livesLeft = (parseInt(upgrades.lives.split(";")[0])) - 1;
-                                upgrades.lives = livesLeft+";"+upgrades.lives.split(";")[1]+";"+upgrades.lives.split(";")[2];;
-                                console.log(livesLeft)
+                                upgrades.lives = livesLeft+";"+upgrades.lives.split(";")[1]+";"+upgrades.lives.split(";")[2];
+                                console.log(upgrades.lives)
                                 document.getElementById("uiLives").innerHTML = "Lives: "+parseInt(upgrades.lives.split(";")[0]);   
                                 document.getElementById("uiLives").style.transform = "scale(1.7)";        
      
