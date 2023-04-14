@@ -100,8 +100,6 @@ input{
 	transition-duration: 1s;
 }
 
-
-
 #buttonPlay{
 	font-size: 5vh;
 	padding: 3vh 12vw;
@@ -135,11 +133,18 @@ input{
 .Shop{
 	display: none;
 	height: 30vh;
-	width: 37vw;
+	width: 60vw;
 	overflow:visible;
 	align-items: center;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: space-around;
+}
+
+.upgrades{
+	display: flex;
+	height: 30vh;
+	align-items: center;
+	flex-direction: row;
 }
 
 .Settings{
@@ -158,16 +163,16 @@ input{
 
 
 .Buy1,.Buy2,.Buy3{
-	background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
-	border: solid 5px rgb(75, 75, 75);
-    border-top: solid 5px rgb(129, 129, 129);
-    border-left: solid 5px rgb(129, 129, 129);
-	height: 30vh;
+	height: 25vh;
+	width: 20vw;
 	padding: 0vh 1vw;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
 	justify-content: space-around;
+}
+#buy1,#buy2,#buy3{
+	width: 15vw;
 }
 
 

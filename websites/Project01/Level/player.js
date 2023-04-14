@@ -14,7 +14,8 @@ let bullets = [];
 let currentPrice = 100; // start from 100 score
 let priceIncrease = 2; // x2 every upgrade
 let upgrades = {plrSpeed: 10,lives: 3,speed: 15,lifetime: 5,rate: 300,damage: 1};
-let upgradeNames = [];
+let upgradeNames = ["Player Speed","Player Lives","Bullet Speed","Firerate","Bullet Lifetime","Bullet Damage"];
+let upgradeCycle = 0;
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
@@ -72,14 +73,12 @@ let spawnPoints = ["-50;-50",
                     window.innerWidth/2+";"+window.innerHeight,
                     "-50;"+window.innerHeight,
                     //window.innerWidth/2+";"+window.innerHeight/2,]
-                    "-50;"+window.innerHeight/2
-                ] // x;y
+                    "-50;"+window.innerHeight/2] // x;y
 let playerStartPos = [(window.innerWidth/2) - (state.player.playerSize[0]/2), (window.innerHeight/2) - (state.player.playerSize[1]/2)] ;
 
 
 
 document.getElementById('buttonPlay').onclick = function() {
-    console.log(    document.getElementById("play").innerHTML)
     if (document.getElementById("play").innerHTML == "Play"){
         if (!playing){
             if (device == 1){
@@ -139,32 +138,50 @@ document.getElementById('set02').onclick = function(){
 
 
 document.getElementById('buy1').onclick = function() {
-    upgrade("rate",-20,80,1)
+    upgrade(false,upgradeCycle);
 }
 
 document.getElementById('buy2').onclick = function() {
-    upgrade("lifetime",0.5,6.5,2);
+    upgrade(false,upgradeCycle+1);
+
 }
 
 document.getElementById('buy3').onclick = function() {
-    upgrade("speed",1,18,3);
+    upgrade(false,upgradeCycle+2);
+
 }
 
 
 
-function upgrade(){
-    upgradeMenu = true;
-    currentPrice *= priceIncrease;
-    document.getElementById("centerTitle").innerHTML = "Upgrade";
-    document.getElementsByClassName("Shop")[0].style.display = "flex";
-    document.getElementsByClassName("Settings")[0].style.display = "none";
+function upgrade(state,index){
+    if (state == false){
+        if (upgradeCycle == upgradeNames.length-1){
+            upgradeCycle = 0;
+        } 
+        else{
+            upgradeCycle++;
+        }
+        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
+        paused = false;
+        upgradeMenu = false;
+        initiateUI();
+        masterUpdate();
+    }
+    else{
+        upgradeMenu = true;
+        currentPrice *= priceIncrease;
+        document.getElementById("centerTitle").innerHTML = "Upgrade";
+        document.getElementsByClassName("Shop")[0].style.display = "flex";
+        document.getElementsByClassName("Settings")[0].style.display = "none";
 
-    document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
-    paused= true;
-    upgradeMenu = false;
-    initiateUI();
+        document.getElementById('buy1').value = upgradeNames[upgradeCycle];
+        document.getElementById('buy2').value = upgradeNames[upgradeCycle+1];
+        document.getElementById('buy3').value = upgradeNames[upgradeCycle+2];
+    
+        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
+        paused= true;
+    }
 }
-
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
     device = 1;
@@ -299,7 +316,6 @@ class Enemy{
         this.timeSinceFrame = 0;
     }
     draw(){
-        console.log(this.backgroundImage)
         context.drawImage(this.backgroundImage,this.posX,this.posY,this.sizeX,this.sizeY)
     }
 }
@@ -331,7 +347,6 @@ function collision(posX1,posX2,width1,width2,posY1,posY2,height1,height2) {
     return collide
 }
 
-
 function initiateUI(){
     document.getElementById("uiLives").innerHTML = "Lives: "+upgrades.lives;      
     document.getElementById("uiScore").innerHTML = "Score: "+score;     
@@ -342,9 +357,6 @@ function gameEnd(){
     document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)"
     document.getElementById("uiLives").style.transform = "scale(1)";        
     document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
-    document.getElementById('price1').innerHTML = "100 score-points";
-    document.getElementById('price2').innerHTML = "100 score-points";
-    document.getElementById('price3').innerHTML = "100 score-points";
 
     context.clearRect(0,0,window.innerWidth,window.innerHeight);
     enemies.length = 0;
@@ -411,7 +423,6 @@ function masterUpdate(){
 
                             enemies.push(new Enemy(game[round].split(";")[1],spawnPointX,spawnPointY,96,96,Math.atan2(state.player.posX - spawnPointX,-(state.player.posX - spawnPointY))*180/Math.PI))
                             enemies[enemies.length-1].draw();  
-                            console.log(enemies);  
                             enemyCount++;
                         } else {
                             if (enemyCount > lastEnemyCount){
@@ -511,7 +522,6 @@ function masterUpdate(){
                                     var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].sizeX,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].sizeY);
                                     if (collide){
                                         enemies[b].lives -= upgrades.damage;
-                                        console.log(enemies[b].lives)
                                         if (enemies[b].lives >= 1) {
                                             playAudio("../sounds/impact02.mp3",false,1,false);
                                         } 
