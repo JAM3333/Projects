@@ -10,14 +10,18 @@ let device = 0;
 let enemies = [];
 let bullets = [];
 
-let bulletStats = {speed: 12,lifetime: 5,rate: 200};
+
+let currentPrice = 100; // start from 100 score
+let priceIncrease = 2; // x2 every upgrade
+let upgrades = {plrSpeed: 10,lives: 3,speed: 15,lifetime: 5,rate: 300,damage: 1};
+let upgradeNames = [];
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
 const enemyAnimFrameChange = 500;
 
-var canvas = document.getElementById("canvasElement");
-var context = canvas.getContext("2d");
+const canvas = document.getElementById("canvasElement");
+const context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = this.window.innerHeight;
 context.imageSmoothingEnabled = false;
@@ -26,20 +30,18 @@ let loopBullet = 0;
 let loopEnemy = 0;
 
 let paused = false;
+let playing = false;
+let upgradeMenu = false;
 
 let score = 0;
-let lives = 3;
 let enemyCount = 0;
 let enemiesSpawned = false;
 let lastEnemyCount = 0;
 let round = 0;
-let playing = false;
 
 
 let keyCodes = ["KeyD","KeyS","KeyA","KeyW"];
 let input = [0,0]; // x/y movement
-
-let walkspeed = [10,-10]; // forward/backward
 
 
 let state = {
@@ -70,10 +72,8 @@ let spawnPoints = ["-50;-50",
                     window.innerWidth/2+";"+window.innerHeight,
                     "-50;"+window.innerHeight,
                     //window.innerWidth/2+";"+window.innerHeight/2,]
-                    "-50;"+window.innerHeight/2] // x;y
-let enemieWave = 0;
-let currentEnemies = 0;
-
+                    "-50;"+window.innerHeight/2
+                ] // x;y
 let playerStartPos = [(window.innerWidth/2) - (state.player.playerSize[0]/2), (window.innerHeight/2) - (state.player.playerSize[1]/2)] ;
 
 
@@ -100,10 +100,14 @@ document.getElementById('buttonPlay').onclick = function() {
 }
 
 document.getElementById('btnSettings').onclick = function() {
-    if (!paused){
+    if (!paused && !upgradeMenu){
         if (device == 1){
             document.getElementsByClassName("btnMobile")[0].style.display = "none";
         }
+        document.getElementById("centerTitle").innerHTML = "Settings";
+        document.getElementsByClassName("Shop")[0].style.display = "none";
+        document.getElementsByClassName("Settings")[0].style.display = "flex";
+
         document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
         paused = true;
     } else {
@@ -119,7 +123,8 @@ document.getElementById('set01').onclick = function(){
     if (paused){
         if (device == 1 && playing){
             document.getElementsByClassName("btnMobile")[0].style.display = "flex";
-        }        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
+        }        
+        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
         paused = false;
         masterUpdate();
     }
@@ -127,6 +132,7 @@ document.getElementById('set01').onclick = function(){
 document.getElementById('set02').onclick = function(){
     if (playing){
         playing = false;
+        paused = false;
         gameEnd();
     }
 }
@@ -146,22 +152,17 @@ document.getElementById('buy3').onclick = function() {
 
 
 
-function upgrade(type, amount, maxAmount,button){
-    if (bulletStats[type] == maxAmount){
-        document.getElementById('price'+button).innerHTML = "upgrade complete";
-    } else{
-        if (score >= document.getElementById('price'+button).innerHTML.split(" ")[0]){
-            let price = parseInt(document.getElementById('price'+button).innerHTML.split(" ")[0]);
-            bulletStats[type] += amount;
-            score -= price;
-            if (bulletStats[type] == maxAmount){
-                document.getElementById('price'+button).innerHTML = "upgrade complete";
-            } else {
-                document.getElementById('price'+button).innerHTML = price*2+" score-points";
-            }
-            initiateUI();
-        }
-    }
+function upgrade(){
+    upgradeMenu = true;
+    currentPrice *= priceIncrease;
+    document.getElementById("centerTitle").innerHTML = "Upgrade";
+    document.getElementsByClassName("Shop")[0].style.display = "flex";
+    document.getElementsByClassName("Settings")[0].style.display = "none";
+
+    document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
+    paused= true;
+    upgradeMenu = false;
+    initiateUI();
 }
 
 
@@ -175,25 +176,25 @@ if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phon
         })  
     },{passive:false});
     document.getElementById("btnUp").ontouchstart = function(){
-        input[1] = walkspeed[1];
+        input[1] = -upgrades.plrSpeed;
     }
     document.getElementById("btnUp").ontouchend = function(){
         input[1] = 0;
     }
     document.getElementById("btnRight").ontouchstart = function(){
-        input[0] = walkspeed[0];
+        input[0] = upgrades.plrSpeed;
     }
     document.getElementById("btnRight").ontouchend = function(){
         input[0] = 0;
     }
     document.getElementById("btnDown").ontouchstart = function(){
-        input[1] = walkspeed[0];
+        input[1] = upgrades.plrSpeed;
     }
     document.getElementById("btnDown").ontouchend = function(){
         input[1] = 0;
     }
     document.getElementById("btnLeft").ontouchstart = function(){
-        input[0] = walkspeed[1];
+        input[0] = -upgrades.plrSpeed;
     }
     document.getElementById("btnLeft").ontouchend = function(){
         input[0] = 0;
@@ -204,10 +205,10 @@ else {
         for (let i = 0; i < keyCodes.length; i++){
             if (inputCode.code === keyCodes[i]){
                 if (i <= 1){
-                    input[Math.ceil((i/2))] = walkspeed[0];
+                    input[Math.ceil((i/2))] = upgrades.plrSpeed;
                 }
                 else {
-                    input[Math.ceil((i/2)) - 1] = walkspeed[1];
+                    input[Math.ceil((i/2)) - 1] = -upgrades.plrSpeed;
                 }
             }
         }
@@ -332,7 +333,7 @@ function collision(posX1,posX2,width1,width2,posY1,posY2,height1,height2) {
 
 
 function initiateUI(){
-    document.getElementById("uiLives").innerHTML = "Lives: "+lives;      
+    document.getElementById("uiLives").innerHTML = "Lives: "+upgrades.lives;      
     document.getElementById("uiScore").innerHTML = "Score: "+score;     
     document.getElementById("uiRound").innerHTML = "Round: "+round; 
 }
@@ -347,7 +348,9 @@ function gameEnd(){
 
     context.clearRect(0,0,window.innerWidth,window.innerHeight);
     enemies.length = 0;
-    
+    if (device == 1){
+        document.getElementsByClassName("btnMobile")[0].style.display = "flex";
+    }
     for (let i = 0; i < bullets.length; i++){
         let bulletDiv = document.body.getElementsByClassName("bullet"+i)[0]; 
         if (bulletDiv){
@@ -360,7 +363,7 @@ function gameEnd(){
     state.player.posX = playerStartPos[0];
     state.player.posY = playerStartPos[1];
 
-    bulletStats = {speed: 12,lifetime: 5,rate: 200}; // start with speed 10 and bullet type 1
+    upgrades = {plrSpeed: 10,lives: 3,speed: 15,lifetime: 5,rate: 300,damage: 1};
 
     enemyCount = 0;
     enemiesSpawned = false;
@@ -368,7 +371,7 @@ function gameEnd(){
     loopEnemy = 0;
     score = 0;
     round = 0;
-    lives = 3;
+    upgrades.lives = 3;
 
     paused = false;
     playing = true;
@@ -387,13 +390,13 @@ const gameSetup = function(){
 
 function masterUpdate(){
     if (!paused) {
-        if (lives > 0){
+        if (upgrades.lives > 0){
             if (enemiesSpawned == false || enemyCount > 0){
                 loopBullet += 16;
                 loopEnemy += 16;
-                if (loopBullet >= bulletStats.rate){
+                if (loopBullet >= upgrades.rate){
                     loopBullet = 0;
-                    createBullet(20,state.player.gunPosX - 20/2,state.player.gunPosY - 20/4,state.player.gunRot,1);
+                    createBullet(20,state.player.gunPosX ,state.player.gunPosY,state.player.gunRot,1);
                     bullets[bullets.length-1].draw();
                     playAudio("../sounds/shoot01.mp3",false,.1,false);
                     playAudio("../sounds/bullet01.mp3",false,.1,false);
@@ -482,9 +485,9 @@ function masterUpdate(){
                                 playAudio("../sounds/impact05.mp3",false,1,false);
 
                                 enemyCount--;
-                                lives--;
+                                upgrades.lives--;
 
-                                document.getElementById("uiLives").innerHTML = "Lives: "+lives;   
+                                document.getElementById("uiLives").innerHTML = "Lives: "+upgrades.lives;   
                                 document.getElementById("uiLives").style.transform = "scale(1.7)";        
      
                             }
@@ -497,7 +500,7 @@ function masterUpdate(){
                     for (let i = 0; i < bullets.length; i++){
                         let bulletDiv = document.body.getElementsByClassName("bullet"+i)[0];
                         if (bulletDiv) {
-                            bulletDiv.style.transform = bulletDiv.style.transform + "translateY(-"+bulletStats.speed+"px)";
+                            bulletDiv.style.transform = bulletDiv.style.transform + "translateY(-"+upgrades.speed+"px)";
     
                             bullets[i].aliveTime += 1/16
                             bullets[i].posX = bulletDiv.getBoundingClientRect().x
@@ -507,13 +510,17 @@ function masterUpdate(){
                                 if (enemies[b].isalive == true && bullets[i]){
                                     var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].sizeX,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].sizeY);
                                     if (collide){
-                                        if (enemies[b].lives > 1) {
-                                            enemies[b].lives--;
+                                        enemies[b].lives -= upgrades.damage;
+                                        console.log(enemies[b].lives)
+                                        if (enemies[b].lives >= 1) {
                                             playAudio("../sounds/impact02.mp3",false,1,false);
                                         } 
                                         else{
                                             enemies[b].isalive = false;
-                                            score += enemyTypes[enemyTypes.findIndex(item => item.name == enemies[b].type)].score
+                                            score += enemyTypes[enemyTypes.findIndex(item => item.name == enemies[b].type)].score;
+                                            if(score >= currentPrice){
+                                                upgrade();
+                                            }
                                             document.getElementById("uiScore").innerHTML = "Score: "+score;      
                                             playAudio("../sounds/impact01.mp3",false,.5,false);
                                             playAudio("../sounds/impact02.mp3",false,1,false);
@@ -535,7 +542,7 @@ function masterUpdate(){
                                 }
                             }
     
-                            if (bullets[i] && bullets[i].aliveTime >= bulletStats.lifetime){
+                            if (bullets[i] && bullets[i].aliveTime >= upgrades.lifetime){
                                 if (bulletDiv) {
                                     bullets.splice(bullets.indexOf(bullets[i]),1);
                                     bulletDiv.classList.remove("bullet"+i);

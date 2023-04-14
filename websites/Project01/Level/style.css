@@ -28,6 +28,18 @@ body{
 	width: 100vw;
 	image-rendering: pixelated;
 }
+
+img{
+	width: 8vw;
+	height: 10vh;
+}
+
+input{
+	background-color: black;
+	color: white;
+	padding: 1vw 1vh;
+}
+
 .ui{
 	display: flex;
 	flex-direction: column;
@@ -121,7 +133,7 @@ body{
 }
 
 .Shop{
-	display: flex;
+	display: none;
 	height: 30vh;
 	width: 37vw;
 	overflow:visible;
@@ -157,16 +169,7 @@ body{
 	flex-direction: column;
 	justify-content: space-around;
 }
-img{
-	width: 8vw;
-	height: 10vh;
-}
 
-input{
-	background-color: black;
-	color: white;
-	padding: 1vw 1vh;
-}
 
 .btnMobile{
 	position: absolute;
