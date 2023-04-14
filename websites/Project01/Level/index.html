@@ -14,38 +14,41 @@
     <canvas id="canvasElement"></canvas>
     <div class="UI">
       <div class="uiTop">
-        <a href="../Main/index.html">Back to Main</a>
+        <input id="btnSettings" type="image" src="../images/Settings.png">
         <div class="uiTopCenter">
           <p id="uiScore">Score: 00000</p> 
           <h2 id="uiRound">Round: 000</h2>
         </div>
         <p id="uiLives">Lives: 00</p>
       </div>
-      <input id="pauseShop" type="submit" name="button" value="PAUSE - SHOP"/>
       <div class="uiCenter">
-        <h2>PAUSE - SHOP</h2>
-        <p>Press "PAUSE - SHOP" to continue playing</p>
+        <h2 id="centerTitle">Settings</h2>
+        <div class="Settings">
+          <input id="set01" type="submit" name="button" value="Continue"/>
+          <input id="set02" type="submit" name="button" value="Restart"/>
+          <input type="submit" name="button" value="Main Menu" onclick="window.location.href='../Main/index.html'"/>
+        </div>
         <div class="Shop">
-          <div class="Buy1">
-            <img src="../images/Sprites/Arrow01.png">
-            <div>
-              <input id="buy1" type="submit" name="button" value="Upgrade firerate"/>
-              <p id="price1">100 score-points</p>
-            </div>    
-          </div>
-          <div class="Buy2">
-            <img src="../images/Sprites/Arrow01.png">
-            <div>
-              <input id="buy2" type="submit" name="button" value="Upgrade bullet livetime"/>
-              <p id="price2">100 score-points</p>
-            </div>      
-          </div>
-          <div class="Buy3">
-            <img src="../images/Sprites/Arrow01.png">
-            <div>
-              <input id="buy3" type="submit" name="button" value="Upgrade bullet speed"/>
-              <p id="price3">100 score-points</p>
-            </div> 
+          <p>Select one of the three Upgrades:</p>
+          <div class = "upgrades">
+            <div class="Buy1">
+              <img src="../images/Sprites/Arrow01.png">
+              <div>
+                <input id="buy1" type="submit" name="button" value="---"/>
+              </div>    
+            </div>
+            <div class="Buy2">
+              <img src="../images/Sprites/Arrow01.png">
+              <div>
+                <input id="buy2" type="submit" name="button" value="---"/>
+              </div>      
+            </div>
+            <div class="Buy3">
+              <img src="../images/Sprites/Arrow01.png">
+              <div>
+                <input id="buy3" type="submit" name="button" value="---"/>
+              </div> 
+            </div>
           </div>
         </div>
       </div>
@@ -56,7 +59,6 @@
           <input id="btnRight" type="submit" name="button" value=">"/>
         </div>
         <input id="btnDown" type="submit" name="button" value="\/"/>
-
       </div>
       <div class="uiDown">
         <h2 id="play">Play</h2>

@@ -9,6 +9,10 @@
     color: white;
 }
 
+
+p {
+	max-width: 95vw;
+}
 canvas {
 	position: absolute;
 	top: 0;
@@ -24,6 +28,18 @@ body{
 	width: 100vw;
 	image-rendering: pixelated;
 }
+
+img{
+	width: 8vw;
+	height: 10vh;
+}
+
+input{
+	background-color: black;
+	color: white;
+	padding: 1vw 1vh;
+}
+
 .ui{
 	display: flex;
 	flex-direction: column;
@@ -35,7 +51,7 @@ body{
 
 	top: 0;
 	width: 100vw;
-	height: 10vh;
+	height: fit-content;
 	left: 0;
 
 	display: flex;
@@ -46,17 +62,13 @@ body{
 .uiTop>p,.uiTop>a{
     background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
 	padding: 1vh 3vw;
-	border-radius: 1vh;
 	margin: 20px 15px;
-	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
 }
 
 .uiTopCenter{
 	background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
 	padding: 1vh 3vw;
-	border-radius: 1vh;
 	margin: 20px 15px;
-	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -77,6 +89,7 @@ body{
 
 	display: flex;
 	align-items: center;
+	text-align: center;
 	flex-direction: column;
 	justify-content: space-around;
 	transition-duration: 1s;
@@ -87,10 +100,9 @@ body{
 	transition-duration: 1s;
 }
 
-
-
 #buttonPlay{
-	padding: 1vw 1vh;
+	font-size: 5vh;
+	padding: 3vh 12vw;
 }
 
 .uiDown:nth-child(1){
@@ -104,39 +116,42 @@ body{
 	z-index: 100;
 
 	margin-top: 10vh;
-	width: 40vw;
 	margin-left: 110vw;
-	height: 50vh;
+	padding-bottom: 1vh;
+
+	width: 70vw;
+	height: fit-content;
 
 
 	display: flex;
 	align-items: center;
 	flex-direction: column;
-	justify-content: space-around;
+	justify-content: flex-start;
 	transition-duration: 1s;
 }
 
 .Shop{
-	display: flex;
+	display: none;
 	height: 30vh;
-	width: 37vw;
+	width: 60vw;
 	overflow:visible;
 	align-items: center;
-	flex-direction: row;
+	flex-direction: column;
 	justify-content: space-around;
 }
 
-#pauseShop{
+.upgrades{
+	display: flex;
+	height: 30vh;
+	align-items: center;
+	flex-direction: row;
+}
+
+.Settings{
     background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
-	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
-	position: absolute;
 	z-index: 100;
 
-	margin-top: 1vh;
 	width: fit-content;
-	margin-left: 30vw;
-	height: 5vh;
-	right: 1vw;
 
 
 	display: flex;
@@ -148,39 +163,28 @@ body{
 
 
 .Buy1,.Buy2,.Buy3{
-	background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
-	border: solid 5px rgb(75, 75, 75);
-    border-top: solid 5px rgb(129, 129, 129);
-    border-left: solid 5px rgb(129, 129, 129);
-	height: 30vh;
+	height: 25vh;
+	width: 20vw;
 	padding: 0vh 1vw;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
 	justify-content: space-around;
 }
-img{
-	width: 8vw;
-	height: 10vh;
+#buy1,#buy2,#buy3{
+	width: 15vw;
 }
 
-input{
-	background-color: black;
-	color: white;
-	padding: 5px 5px;
-	width: 8vw;
-}
 
 .btnMobile{
-	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
 	position: absolute;
 	z-index: 100;
 
-	width: 25vw;
+	width: 50vw;
 	height: 20vh;
 
-	top: 70vh;
-	left: 37.5vw;
+	top: 75vh;
+	left: 25vw;
 
 	display:none;
 	align-items: center;
@@ -189,6 +193,26 @@ input{
 }
 
 #btnUp,#btnLeft,#btnDown,#btnRight {
-	width: 10vw;
-	height: 5vh;
+	width: 20vw;
+	height: 6vh;
 }
+
+#btnSettings{
+	background-color: transparent;
+	width: 6vw;
+	margin-left: 1vw;
+}
+
+.uiCenter>h2{
+	font-size: 2vh;
+	margin-top: 1.5vh;
+}
+
+.Settings>input{
+	font-size: 2vh;
+	width: 60vw;
+	height: 6vh;
+	margin-top: 2vh;
+}
+
+
