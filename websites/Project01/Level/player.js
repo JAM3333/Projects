@@ -9,7 +9,7 @@ let enemies = [];
 let bullets = [];
 
 let bulletStats = {speed: 12,lifetime: 5,rate: 200};
-const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 20},{name: "Test3",sprite: "../images/Sprites/Arrow0.png",speed: 1,lives: 5,score: 50}]
+const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
 const enemyAnimFrameChange = 500;
@@ -31,7 +31,7 @@ let enemyCount = 0;
 let enemiesSpawned = false;
 let lastEnemyCount = 0;
 let round = 0;
-let count = 0;
+let playing = false;
 
 
 let keyCodes = ["KeyD","KeyS","KeyA","KeyW"];
@@ -78,10 +78,16 @@ let playerStartPos = [(window.innerWidth/2) - (state.player.playerSize[0]/2), (w
 
 document.getElementById('buttonPlay').onclick = function() {
     if (document.getElementById("play").innerHTML == "Play"){
-        gameSetup();
+        if (!playing){
+            playing = true;
+            gameSetup();
+        }
         document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
     } else {
-        gameEnd();
+        if (playing){
+            playing = false;
+            gameEnd();
+        }
     }
 
 
@@ -110,6 +116,8 @@ document.getElementById('buy3').onclick = function() {
     upgrade("speed",1,18,3);
 }
 
+
+
 function upgrade(type, amount, maxAmount,button){
     if (bulletStats[type] == maxAmount){
         document.getElementById('price'+button).innerHTML = "upgrade complete";
@@ -130,6 +138,7 @@ function upgrade(type, amount, maxAmount,button){
 
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+    document.getElementsByClassName("btnMobile")[0].style.display = "flex";
     document.addEventListener("touchmove",function(info){
         info.preventDefault();
         [...info.changedTouches].forEach(function(touch){
@@ -276,6 +285,7 @@ function initiateUI(){
 
 function gameEnd(){
     document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(80vw)"
+    document.getElementById("uiLives").style.transform = "scale(1)";        
     document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
     document.getElementById('price1').innerHTML = "100 score-points";
     document.getElementById('price2').innerHTML = "100 score-points";
@@ -385,7 +395,6 @@ function masterUpdate(){
                     for (let i = 0; i < enemies.length; i++){
                         if (enemies[i].isalive == true ) {
                             enemies[i].angle = Math.atan2((state.player.posY - enemies[i].posY) ,(state.player.posX - enemies[i].posX));
-    
                        
                             let distX = enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.cos(enemies[i].angle);
                             let distY = enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].speed * Math.sin(enemies[i].angle);  
@@ -403,16 +412,26 @@ function masterUpdate(){
                                     enemies[i].animFrame = 1;
                                 }
                             }
-                            enemies[i].backgroundImage.src = (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).substring(0, (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).length - 4) + enemies[i].animFrame +".png";
-                           // enemies[i].backgroundImage.transform = "scaleX(-1)";
+
+                            if (enemies[i].angle <= Math.PI/2 && enemies[i].angle >= -Math.PI/2){
+                                enemies[i].backgroundImage.src = (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).substring(0, (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).length - 4) + enemies[i].animFrame +".png";
+                            }
+                            else {
+                                enemies[i].backgroundImage.src = (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).substring(0, (enemyTypes[enemyTypes.findIndex(item => item.name == enemies[i].type)].sprite).length - 4) +"Invert"+ enemies[i].animFrame +".png";
+                            }
+
                             var collide = collision(state.player.posX,enemies[i].posX,state.player.playerSize[0],enemies[i].sizeX,state.player.posY,enemies[i].posY,state.player.playerSize[1],enemies[i].sizeY);
                             if (collide){
                                 enemies[i].isalive = false;
                                 playAudio("../sounds/impact01.mp3",false,.5,false);
-                                playAudio("../sounds/impact04.mp3",false,1,false);
+                                playAudio("../sounds/impact05.mp3",false,1,false);
+
                                 enemyCount--;
                                 lives--;
-                                document.getElementById("uiLives").innerHTML = "Lives: "+lives;      
+
+                                document.getElementById("uiLives").innerHTML = "Lives: "+lives;   
+                                document.getElementById("uiLives").style.transform = "scale(1.7)";        
+     
                             }
                             context.drawImage(enemies[i].backgroundImage,enemies[i].posX,enemies[i].posY,enemies[i].sizeX,enemies[i].sizeY);
                         } 
