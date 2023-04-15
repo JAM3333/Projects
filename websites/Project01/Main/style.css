@@ -87,7 +87,7 @@ header{
 .downInfo {
     background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
     width: 80vw;
-    height: 100vh;
+    height: fit-content;
     overflow-y: visible;
     padding-top: 8vh;
     padding-left: 10vw;

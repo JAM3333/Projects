@@ -138,16 +138,14 @@ document.getElementById('set02').onclick = function(){
 }
 
 
-document.getElementById('buy1').onclick = function() {
+document.getElementsByClassName('Buy1')[0].onclick = function() {
     upgrade(false,upgradeCycle);
 }
-
-document.getElementById('buy2').onclick = function() {
+document.getElementsByClassName('Buy2')[0].onclick = function() {
     upgrade(false,upgradeCycle+1);
 
 }
-
-document.getElementById('buy3').onclick = function() {
+document.getElementsByClassName('Buy3')[0].onclick = function() {
     upgrade(false,upgradeCycle+2);
 
 }
@@ -155,11 +153,9 @@ document.getElementById('buy3').onclick = function() {
 
 
 function upgrade(state,index){
-    console.log(index)
     if (typeof index == "undefined" || upgrades[Object.keys(upgrades)[index]].split(";")[0] != upgrades[Object.keys(upgrades)[index]].split(";")[2]){
         if (state == false){     
             upgrades[Object.keys(upgrades)[index]] = (parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[0])+parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[1]))+";"+upgrades[Object.keys(upgrades)[index]].split(";")[1]+";"+upgrades[Object.keys(upgrades)[index]].split(";")[2];
-            console.log(upgrades[Object.keys(upgrades)[index]]);
 
 
             if (upgradeCycle == upgradeNames.length-3){
@@ -175,18 +171,48 @@ function upgrade(state,index){
             masterUpdate();
         }
         else{
-            upgradeMenu = true;
-            currentPrice = (currentPrice * parseFloat(priceIncrease.split(";")[0])) + parseFloat(priceIncrease.split(";")[1]);
+        
             document.getElementById("centerTitle").innerHTML = "Upgrade";
             document.getElementsByClassName("Shop")[0].style.display = "flex";
             document.getElementsByClassName("Settings")[0].style.display = "none";
 
-            document.getElementById('buy1').value = upgradeNames[upgradeCycle];
-            document.getElementById('buy2').value = upgradeNames[upgradeCycle+1];
-            document.getElementById('buy3').value = upgradeNames[upgradeCycle+2];
-        
-            document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
-            paused= true;
+            let maxUpgrades = 0;
+
+            document.getElementById('buy1').innerHTML = upgradeNames[upgradeCycle];
+            document.getElementById('buy1').style.backgroundColor = "transparent";
+            document.getElementById('buy2').innerHTML = upgradeNames[upgradeCycle+1];
+            document.getElementById('buy2').style.backgroundColor = "transparent";
+            document.getElementById('buy3').innerHTML = upgradeNames[upgradeCycle+2];
+            document.getElementById('buy3').style.backgroundColor = "transparent";
+
+            if (upgrades[Object.keys(upgrades)[upgradeCycle]].split(";")[0] == upgrades[Object.keys(upgrades)[upgradeCycle]].split(";")[2]){
+                document.getElementById('buy1').style.backgroundColor = "red";
+                document.getElementById('buy1').innerHTML = "Max upgrade";
+                maxUpgrades++;
+            }
+            if (upgrades[Object.keys(upgrades)[upgradeCycle+1]].split(";")[0] == upgrades[Object.keys(upgrades)[upgradeCycle+1]].split(";")[2]){
+                document.getElementById('buy2').style.backgroundColor = "red";
+                document.getElementById('buy2').innerHTML = "Max upgrade";
+                maxUpgrades++;
+            }
+            if (upgrades[Object.keys(upgrades)[upgradeCycle+2]].split(";")[0] == upgrades[Object.keys(upgrades)[upgradeCycle+2]].split(";")[2]){
+                document.getElementById('buy3').style.backgroundColor = "red";
+                document.getElementById('buy3').innerHTML = "Max upgrade";
+                maxUpgrades++;
+            }
+            if(maxUpgrades == 3){
+                document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
+                initiateUI();
+                paused = false;
+                upgradeMenu = false;
+                masterUpdate();              
+            } else {
+                document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
+                paused= true;
+                upgradeMenu = true;
+                currentPrice = (currentPrice * parseFloat(priceIncrease.split(";")[0])) + parseFloat(priceIncrease.split(";")[1]);
+            }
+          
         }
     } 
 }
@@ -505,7 +531,6 @@ function masterUpdate(){
                                 enemyCount--;
                                 let livesLeft = (parseInt(upgrades.lives.split(";")[0])) - 1;
                                 upgrades.lives = livesLeft+";"+upgrades.lives.split(";")[1]+";"+upgrades.lives.split(";")[2];
-                                console.log(upgrades.lives)
                                 document.getElementById("uiLives").innerHTML = "Lives: "+parseInt(upgrades.lives.split(";")[0]);   
                                 document.getElementById("uiLives").style.transform = "scale(1.7)";        
      

@@ -173,9 +173,18 @@ input{
 	align-items: center;
 	flex-direction: column;
 	justify-content: space-around;
+	border-radius: 1vh;
+	background-color: rgba(0, 0, 0, 0.24);
+	transition-duration: .5s;
 }
 
+.Buy2{
+	margin: 0vh 1.5vw;
+}
 
+.Buy1:hover,.Buy2:hover,.Buy3:hover{
+	transform: scale(1.1,1.1);
+}
 
 .btnMobile{
 	position: absolute;
