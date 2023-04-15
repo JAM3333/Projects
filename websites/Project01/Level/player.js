@@ -13,9 +13,10 @@ let bullets = [];
 
 let currentPrice = 100; // start from 100 score
 let priceIncrease = "1.2;100"; // x1.2 + 100 every upgrade
-let upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
-let upgradeNames = ["Firerate","Player Speed","Player Lives","Bullet Speed","Bullet Lifetime","Bullet Damage"];
+let upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",critical:"5;5;25",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
+let upgradeNames = ["Firerate","Player Speed","Player Lives","Bullet Speed","Bullet Lifetime","Critical Hit Chance","Bullet Damage"];
 let upgradeCycle = 0;
+let criticalDamage = 2; // +amount of damage if critical accours
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 15},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 30},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
@@ -138,16 +139,14 @@ document.getElementById('set02').onclick = function(){
 }
 
 
-document.getElementById('buy1').onclick = function() {
+document.getElementsByClassName('Buy1')[0].onclick = function() {
     upgrade(false,upgradeCycle);
 }
-
-document.getElementById('buy2').onclick = function() {
+document.getElementsByClassName('Buy2')[0].onclick = function() {
     upgrade(false,upgradeCycle+1);
 
 }
-
-document.getElementById('buy3').onclick = function() {
+document.getElementsByClassName('Buy3')[0].onclick = function() {
     upgrade(false,upgradeCycle+2);
 
 }
@@ -155,11 +154,9 @@ document.getElementById('buy3').onclick = function() {
 
 
 function upgrade(state,index){
-    console.log(index)
     if (typeof index == "undefined" || upgrades[Object.keys(upgrades)[index]].split(";")[0] != upgrades[Object.keys(upgrades)[index]].split(";")[2]){
         if (state == false){     
             upgrades[Object.keys(upgrades)[index]] = (parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[0])+parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[1]))+";"+upgrades[Object.keys(upgrades)[index]].split(";")[1]+";"+upgrades[Object.keys(upgrades)[index]].split(";")[2];
-            console.log(upgrades[Object.keys(upgrades)[index]]);
 
 
             if (upgradeCycle == upgradeNames.length-3){
@@ -175,18 +172,48 @@ function upgrade(state,index){
             masterUpdate();
         }
         else{
-            upgradeMenu = true;
-            currentPrice = (currentPrice * parseFloat(priceIncrease.split(";")[0])) + parseFloat(priceIncrease.split(";")[1]);
+        
             document.getElementById("centerTitle").innerHTML = "Upgrade";
             document.getElementsByClassName("Shop")[0].style.display = "flex";
             document.getElementsByClassName("Settings")[0].style.display = "none";
 
-            document.getElementById('buy1').value = upgradeNames[upgradeCycle];
-            document.getElementById('buy2').value = upgradeNames[upgradeCycle+1];
-            document.getElementById('buy3').value = upgradeNames[upgradeCycle+2];
-        
-            document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
-            paused= true;
+            let maxUpgrades = 0;
+
+            document.getElementById('buy1').innerHTML = upgradeNames[upgradeCycle];
+            document.getElementById('buy1').style.backgroundColor = "transparent";
+            document.getElementById('buy2').innerHTML = upgradeNames[upgradeCycle+1];
+            document.getElementById('buy2').style.backgroundColor = "transparent";
+            document.getElementById('buy3').innerHTML = upgradeNames[upgradeCycle+2];
+            document.getElementById('buy3').style.backgroundColor = "transparent";
+
+            if (upgrades[Object.keys(upgrades)[upgradeCycle]].split(";")[0] == upgrades[Object.keys(upgrades)[upgradeCycle]].split(";")[2]){
+                document.getElementById('buy1').style.backgroundColor = "red";
+                document.getElementById('buy1').innerHTML = "Max upgrade";
+                maxUpgrades++;
+            }
+            if (upgrades[Object.keys(upgrades)[upgradeCycle+1]].split(";")[0] == upgrades[Object.keys(upgrades)[upgradeCycle+1]].split(";")[2]){
+                document.getElementById('buy2').style.backgroundColor = "red";
+                document.getElementById('buy2').innerHTML = "Max upgrade";
+                maxUpgrades++;
+            }
+            if (upgrades[Object.keys(upgrades)[upgradeCycle+2]].split(";")[0] == upgrades[Object.keys(upgrades)[upgradeCycle+2]].split(";")[2]){
+                document.getElementById('buy3').style.backgroundColor = "red";
+                document.getElementById('buy3').innerHTML = "Max upgrade";
+                maxUpgrades++;
+            }
+            if(maxUpgrades == 3){
+                document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
+                initiateUI();
+                paused = false;
+                upgradeMenu = false;
+                masterUpdate();              
+            } else {
+                document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
+                paused= true;
+                upgradeMenu = true;
+                currentPrice = (currentPrice * parseFloat(priceIncrease.split(";")[0])) + parseFloat(priceIncrease.split(";")[1]);
+            }
+          
         }
     } 
 }
@@ -505,7 +532,6 @@ function masterUpdate(){
                                 enemyCount--;
                                 let livesLeft = (parseInt(upgrades.lives.split(";")[0])) - 1;
                                 upgrades.lives = livesLeft+";"+upgrades.lives.split(";")[1]+";"+upgrades.lives.split(";")[2];
-                                console.log(upgrades.lives)
                                 document.getElementById("uiLives").innerHTML = "Lives: "+parseInt(upgrades.lives.split(";")[0]);   
                                 document.getElementById("uiLives").style.transform = "scale(1.7)";        
      
@@ -529,7 +555,13 @@ function masterUpdate(){
                                 if (enemies[b].isalive == true && bullets[i]){
                                     var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].sizeX,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].sizeY);
                                     if (collide){
-                                        enemies[b].lives -= parseInt(upgrades.damage.split(";")[0]);
+                                        let randomCrit = Math.random() * 100
+                                        if (randomCrit <= +parseInt(upgrades.critical.split(";")[0])){
+                                            enemies[b].lives -= parseInt(upgrades.damage.split(";")[0]) + criticalDamage;
+                                            playAudio("../sounds/damageCritical.mp3",false,.5,false);
+                                        } else{
+                                            enemies[b].lives -= parseInt(upgrades.damage.split(";")[0]);
+                                        }
                                         if (enemies[b].lives >= 1) {
                                             playAudio("../sounds/impact02.mp3",false,1,false);
                                         } 
