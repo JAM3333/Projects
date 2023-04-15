@@ -13,9 +13,10 @@ let bullets = [];
 
 let currentPrice = 100; // start from 100 score
 let priceIncrease = "1.2;100"; // x1.2 + 100 every upgrade
-let upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
-let upgradeNames = ["Firerate","Player Speed","Player Lives","Bullet Speed","Bullet Lifetime","Bullet Damage"];
+let upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",critical:"5;5;25",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
+let upgradeNames = ["Firerate","Player Speed","Player Lives","Bullet Speed","Bullet Lifetime","Critical Hit Chance","Bullet Damage"];
 let upgradeCycle = 0;
+let criticalDamage = 2; // +amount of damage if critical accours
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 15},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 30},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
@@ -554,7 +555,13 @@ function masterUpdate(){
                                 if (enemies[b].isalive == true && bullets[i]){
                                     var collide = collision(bullets[i].posX,enemies[b].posX,bullets[i].size,enemies[b].sizeX,bullets[i].posY,enemies[b].posY,bullets[i].size,enemies[b].sizeY);
                                     if (collide){
-                                        enemies[b].lives -= parseInt(upgrades.damage.split(";")[0]);
+                                        let randomCrit = Math.random() * 100
+                                        if (randomCrit <= +parseInt(upgrades.critical.split(";")[0])){
+                                            enemies[b].lives -= parseInt(upgrades.damage.split(";")[0]) + criticalDamage;
+                                            playAudio("../sounds/damageCritical.mp3",false,.5,false);
+                                        } else{
+                                            enemies[b].lives -= parseInt(upgrades.damage.split(";")[0]);
+                                        }
                                         if (enemies[b].lives >= 1) {
                                             playAudio("../sounds/impact02.mp3",false,1,false);
                                         } 
