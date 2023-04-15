@@ -110,7 +110,7 @@ document.getElementById('btnSettings').onclick = function() {
 
         document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
         paused = true;
-    } else {
+    } else if (!upgradeMenu) {
         if (device == 1 && playing){
             document.getElementsByClassName("btnMobile")[0].style.display = "flex";
         }

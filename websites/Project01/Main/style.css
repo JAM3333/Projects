@@ -35,7 +35,10 @@ header{
 
 
 .mainUp {
-    background: linear-gradient(-20deg, rgb(41, 44, 46) 0%, rgb(118, 178, 207) 100%);
+    background-position: 0 -30vh;
+    background-image: url(../images/Sprites/Icons/Game02.png);
+    background-repeat: no-repeat;
+    background-size: 100vw;
     height: 60vh;
 }
 
@@ -120,12 +123,21 @@ header{
 }
 
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 768px)  and (orientation: landscape) and (min-aspect-ratio: 3/6){
     .downInfo {
         flex-direction: row;
     }
     .info02{
         margin: 0vh 1vw;
     }
-	
+    .mainUp{
+        background-position: 0 5vh;
+        background-image: url(../images/Sprites/Icons/Game01.png);
+    }
+}
+
+@media  only screen and (max-aspect-ratio: 9/16) {
+    .mainUp{
+        background-position: 0 0;
+    }   
 }
