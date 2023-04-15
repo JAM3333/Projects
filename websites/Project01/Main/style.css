@@ -205,7 +205,6 @@ header{
         background-image: url(../images/Sprites/Icons/Game01.png);
         height: calc(0.53 * 100vw);
     }
-<<<<<<< HEAD
 
     .mainDown {
         background-color: rgb(48, 51, 43);
@@ -244,6 +243,14 @@ header{
     display: flex;
     align-items: center;
 }
+=======
+    .info01,.info02,.info03{
+        height: 50vh;       
+    }
+}
+
+
+>>>>>>> 8242433906e518e21074c0ddd6448fe6bca5f7e3
 
 .headerDiv {
     height: 100%;
