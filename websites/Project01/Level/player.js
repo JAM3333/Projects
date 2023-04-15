@@ -12,7 +12,7 @@ let bullets = [];
 
 
 let currentPrice = 100; // start from 100 score
-let priceIncrease = 2; // x2 every upgrade
+let priceIncrease = "1.2;100"; // x1.2 + 100 every upgrade
 let upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
 let upgradeNames = ["Firerate","Player Speed","Player Lives","Bullet Speed","Bullet Lifetime","Bullet Damage"];
 let upgradeCycle = 0;
@@ -155,39 +155,40 @@ document.getElementById('buy3').onclick = function() {
 
 
 function upgrade(state,index){
-    if (state == false){
-        if (upgrades[Object.keys(upgrades)[index]].split(";")[0] != upgrades[Object.keys(upgrades)[index]].split(";")[2]){        
+    console.log(index)
+    if (typeof index == "undefined" || upgrades[Object.keys(upgrades)[index]].split(";")[0] != upgrades[Object.keys(upgrades)[index]].split(";")[2]){
+        if (state == false){     
             upgrades[Object.keys(upgrades)[index]] = (parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[0])+parseInt(upgrades[Object.keys(upgrades)[index]].split(";")[1]))+";"+upgrades[Object.keys(upgrades)[index]].split(";")[1]+";"+upgrades[Object.keys(upgrades)[index]].split(";")[2];
             console.log(upgrades[Object.keys(upgrades)[index]]);
+
+
+            if (upgradeCycle == upgradeNames.length-3){
+                upgradeCycle = 0;
+            } 
+            else{
+                upgradeCycle++;
+            }
+            document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
+            initiateUI();
+            paused = false;
+            upgradeMenu = false;
+            masterUpdate();
         }
-
-
-        if (upgradeCycle == upgradeNames.length-3){
-            upgradeCycle = 0;
-        } 
         else{
-            upgradeCycle++;
-        }
-        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
-        initiateUI();
-        paused = false;
-        upgradeMenu = false;
-        masterUpdate();
-    }
-    else{
-        upgradeMenu = true;
-        currentPrice *= priceIncrease;
-        document.getElementById("centerTitle").innerHTML = "Upgrade";
-        document.getElementsByClassName("Shop")[0].style.display = "flex";
-        document.getElementsByClassName("Settings")[0].style.display = "none";
+            upgradeMenu = true;
+            currentPrice = (currentPrice * parseFloat(priceIncrease.split(";")[0])) + parseFloat(priceIncrease.split(";")[1]);
+            document.getElementById("centerTitle").innerHTML = "Upgrade";
+            document.getElementsByClassName("Shop")[0].style.display = "flex";
+            document.getElementsByClassName("Settings")[0].style.display = "none";
 
-        document.getElementById('buy1').value = upgradeNames[upgradeCycle];
-        document.getElementById('buy2').value = upgradeNames[upgradeCycle+1];
-        document.getElementById('buy3').value = upgradeNames[upgradeCycle+2];
-    
-        document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
-        paused= true;
-    }
+            document.getElementById('buy1').value = upgradeNames[upgradeCycle];
+            document.getElementById('buy2').value = upgradeNames[upgradeCycle+1];
+            document.getElementById('buy3').value = upgradeNames[upgradeCycle+2];
+        
+            document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
+            paused= true;
+        }
+    } 
 }
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
