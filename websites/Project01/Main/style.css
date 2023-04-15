@@ -204,6 +204,9 @@ header{
         background-image: url(../images/Sprites/Icons/Game01.png);
         height: calc(0.53 * 100vw);
     }
+    .info01,.info02,.info03{
+        height: 50vh;       
+    }
 }
 
 @media  only screen and (max-aspect-ratio: 9/16) {
