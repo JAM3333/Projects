@@ -82,9 +82,7 @@ header{
 
 .info01{
     background: linear-gradient(-20deg, rgb(44, 69, 88) 0%, rgb(36, 56, 66) 100%);
-    border: solid 5px rgb(75, 75, 75);
-    border-top: solid 5px rgb(129, 129, 129);
-    border-left: solid 5px rgb(129, 129, 129);
+ 
     width: 80vw;
     margin-bottom: 1vh;
     height: 70vh;
@@ -96,9 +94,7 @@ header{
 
 .info02{
     background: linear-gradient(-20deg, rgb(75, 70, 56) 0%, rgb(36, 56, 66) 100%);
-    border: solid 5px rgb(75, 75, 75);
-    border-top: solid 5px rgb(129, 129, 129);
-    border-left: solid 5px rgb(129, 129, 129);
+ 
     width: 80vw;
     margin-bottom: 1vh;
     height: 70vh;
@@ -110,9 +106,7 @@ header{
 
 .info03{
     background: linear-gradient(-20deg, rgb(56, 71, 64) 0%, rgb(36, 56, 66) 100%);
-    border: solid 5px rgb(75, 75, 75);
-    border-top: solid 5px rgb(129, 129, 129);
-    border-left: solid 5px rgb(129, 129, 129);
+ 
     width: 80vw;
     margin-bottom: 1vh;
     height: 70vh;
@@ -131,7 +125,7 @@ header{
         margin: 0vh 1vw;
     }
     .mainUp{
-        background-position: 0 5vh;
+        background-position: 0 0;
         background-image: url(../images/Sprites/Icons/Game01.png);
     }
 }
