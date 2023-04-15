@@ -13,8 +13,8 @@ let bullets = [];
 
 let currentPrice = 100; // start from 100 score
 let priceIncrease = 2; // x2 every upgrade
-let upgrades = {plrSpeed: "10;1;17",lives: "3;1;6",rate: "300;-30;150",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
-let upgradeNames = ["Player Speed","Player Lives","Firerate","Bullet Speed","Bullet Lifetime","Bullet Damage"];
+let upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
+let upgradeNames = ["Firerate","Player Speed","Player Lives","Bullet Speed","Bullet Lifetime","Bullet Damage"];
 let upgradeCycle = 0;
 const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 10},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 2,score: 20},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
 
@@ -612,22 +612,24 @@ function masterUpdate(){
                 }
                 if (input[0] == 0 && input[1] == 0){
                     if (state.player.gunRot <= 180 && state.player.gunRot >= 0){
+                        gunStyle.transform = "rotate("+state.player.gunRot+"deg)";
                         playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdle.png";
                     }
                     else {
+                        gunStyle.transform = "rotate("+state.player.gunRot+"deg) scale(-1,1)";
                         playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdleInverted.png";
                     }
                 } else {
                     if (state.player.gunRot <= 180 && state.player.gunRot >= 0){
+                        gunStyle.transform = "rotate("+state.player.gunRot+"deg)";
                         playerStyle.backgroundImage = "url(../images/Sprites/player/playerMove" + state.player.animFrame +".png";
                     }
                     else {
+                        gunStyle.transform = "rotate("+state.player.gunRot+"deg) scale(-1,1)";
                         playerStyle.backgroundImage = "url(../images/Sprites/player/playerMove" + state.player.animFrame +"Inverted.png";
                     }
                 }
                 
-    
-                gunStyle.transform = "rotate("+state.player.gunRot+"deg)"
                 playerStyle.left = state.player.posX+"px";
                 playerStyle.top = state.player.posY+"px";
     

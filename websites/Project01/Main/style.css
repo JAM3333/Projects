@@ -53,7 +53,7 @@ header{
     border-top: solid 5px rgb(129, 129, 129);
     border-left: solid 5px rgb(129, 129, 129);
     width: 50vw;
-    height: 10vh;
+    height: 50vh;
     margin-top: -5vh;
     padding-bottom: 1vh;
     z-index: 2;
@@ -64,12 +64,15 @@ header{
 }
 .downInfo {
     background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
-    width: 100vw;
-    height: 30vh;
+    width: 80vw;
+    height: 100vh;
+    overflow-y: visible;
     padding-top: 8vh;
+    padding-left: 10vw;
+    padding-right: 10vw;
     margin-top: -7vh;
     display: flex;
-    align-items: top;
+    flex-direction: column;
     justify-content: space-evenly;
     border-top: solid 5px rgb(129, 129, 129);
 }
@@ -79,8 +82,13 @@ header{
     border: solid 5px rgb(75, 75, 75);
     border-top: solid 5px rgb(129, 129, 129);
     border-left: solid 5px rgb(129, 129, 129);
-    width: 30vw;
-    height: 20vh;
+    width: 80vw;
+    margin-bottom: 1vh;
+    height: 70vh;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
 }
 
 .info02{
@@ -88,8 +96,13 @@ header{
     border: solid 5px rgb(75, 75, 75);
     border-top: solid 5px rgb(129, 129, 129);
     border-left: solid 5px rgb(129, 129, 129);
-    width: 30vw;
-    height: 20vh;
+    width: 80vw;
+    margin-bottom: 1vh;
+    height: 70vh;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
 }
 
 .info03{
@@ -97,6 +110,22 @@ header{
     border: solid 5px rgb(75, 75, 75);
     border-top: solid 5px rgb(129, 129, 129);
     border-left: solid 5px rgb(129, 129, 129);
-    width: 30vw;
-    height: 20vh;
+    width: 80vw;
+    margin-bottom: 1vh;
+    height: 70vh;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+@media only screen and (min-width: 768px) {
+    .downInfo {
+        flex-direction: row;
+    }
+    .info02{
+        margin: 0vh 1vw;
+    }
+	
 }
