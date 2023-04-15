@@ -11,10 +11,16 @@ body{
 }
 
 .logo {
-    width: 50px;
-    height: auto;
+ height: 50px;
+ width: 50px;
+  position: absolute;
+    left: 45%;
+    top: 2vh;
+    z-index: 9;
     image-rendering: pixelated;
-}
+} 
+
+
 
 header{
     background-color: rgb(38, 41, 43);
@@ -41,40 +47,51 @@ header{
 
 }
 
-.headerDivName {
-    height: 100%;
-    margin-left: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
+.dropdown {
+    background-image: url(menu.png);
+    width: 50px;
+    height: 7vh;
+    position: fixed;
+    z-index: 9;
+    opacity:;
+    top: 2vh;
+    left: 20px;
+    background-size: 100%;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.dropdown:hover {
+    background-image: url(cancel.png);
+}
+
+.headerDivName {
+    position: absolute;
+    left: 45%;
+    top: 5px;
+    width: fit-content;
+    height: 9vh;
+    z-index: 10;
+    transform: translateX(-50%);    
 }
 
 .headerDiv {
-    height: 100%;
-    margin-left: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    display: flex;
-    align-items: center;
+    opacity: 0;
 }
 
-.headerDivName:hover {
-    background-color: rgb(48, 51, 53);
-    cursor: pointer;
+.dropdown:hover + .headerDiv,{
+    opacity:;
 }
 
-.headerDiv:hover {
-    background-color: rgb(48, 51, 53);
-    cursor: pointer;
-}
 
 .mainUp {
     background-position: 0 -10vh;
     background-image: url(../images/Sprites/Icons/Game02.png);
     background-repeat: no-repeat;
     background-size: 100vw;
-    height: calc(12 * 100vw);
+    height: calc(1.2 * 100vw);
 }
 
 .mainDown {
@@ -164,7 +181,7 @@ header{
 }
 
 .info02{
-    background: linear-gradient(-20deg, rgb(75, 70, 56) 0%, rgb(36, 56, 66) 100%);
+    background: linear-gradient(-20deg, rgb(44, 69, 88) 0%, rgb(36, 56, 66) 100%);
  
     width: 80vw;
     height: fit-content;
@@ -176,8 +193,15 @@ header{
     flex-direction: column;
 }
 
+.info02>div{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items:center;
+}
+
 .info03{
-    background: linear-gradient(-20deg, rgb(56, 71, 64) 0%, rgb(36, 56, 66) 100%);
+    background: linear-gradient(-20deg, rgb(44, 69, 88) 0%, rgb(36, 56, 66) 100%);
  
     width: 80vw;    
     height: fit-content;
@@ -232,8 +256,15 @@ header{
     top: 0;
     right: 0;
 
-}
+    }
 
+.logo {
+ height: 50px;
+ width: 50px;
+ position: unset;
+ transform: translateX(0%);
+ image-rendering: pixelated;
+}
 .headerDivName {
     height: 100%;
     margin-left: 30px;
@@ -241,14 +272,12 @@ header{
     padding-right: 10px;
     display: flex;
     align-items: center;
-}
-=======
-    .info01,.info02,.info03{
+    position: unset;
+    }
+
+.info01,.info02,.info03{
         height: 50vh;       
     }
-}
-
-
 
 .headerDiv {
     height: 100%;
@@ -257,23 +286,33 @@ header{
     padding-right: 10px;
     display: flex;
     align-items: center;
-}
+    opacity:;
+    }
 
 .headerDivName:hover {
     background-color: rgb(48, 51, 53);
     cursor: pointer;
-}
+    }
 
 .headerDiv:hover {
     background-color: rgb(48, 51, 53);
     cursor: pointer;
+    }
+
+
+
+.dropdown {
+    opacity: 0;
 }
 
-=======
     .info01,.info02,.info03{
         height: 50vh;       
     }
+    
 }
+}
+
+
 
 
 
