@@ -70,7 +70,7 @@ header{
 }
 
 .mainUp {
-    background-position: 0 -30vh;
+    background-position: 0 -10vh;
     background-image: url(../images/Sprites/Icons/Game02.png);
     background-repeat: no-repeat;
     background-size: 100vw;
@@ -209,9 +209,5 @@ header{
     }
 }
 
-@media  only screen and (max-aspect-ratio: 9/16) {
-    .mainUp{
-        background-position: 0 0;
-    }   
-}
+
 
