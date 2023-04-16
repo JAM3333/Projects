@@ -305,7 +305,8 @@ header{
     }
 
     .info01,.info02{
-        height: 50vh;       
+        min-height: 50vh;  
+        height: fit-content;     
     }   
 
     .downCenter{
