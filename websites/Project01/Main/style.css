@@ -116,8 +116,8 @@ header{
     border: solid 5px rgb(75, 75, 75);
     border-top: solid 5px rgb(129, 129, 129);
     border-left: solid 5px rgb(129, 129, 129);
-    width: 350px;
-    height: 50px;
+    width: 80vw;
+    height: 7vh;
     margin-top: -5vh;
     padding: 1vh 0vw;
     z-index: 2;
@@ -166,7 +166,8 @@ header{
 .info01{
     background: linear-gradient(-20deg, rgb(44, 88, 70) 0%, rgb(36, 56, 66) 100%);
  
-    width: 80vw;
+    width: fit-content;
+    min-width: 80vw;
     height: fit-content;
     padding: 3vh 0;
     line-height: 2;
@@ -191,7 +192,8 @@ header{
 .info02{
     background: linear-gradient(-20deg, rgb(97, 73, 36) 0%, rgb(36, 56, 66) 100%);
  
-    width: 80vw;
+    width: fit-content;
+    min-width: 80vw;
     height: fit-content;
     padding: 3vh 0;
     line-height: 2;
@@ -216,9 +218,15 @@ header{
     }
 
     .info02{
+        width: 40vw;
+        min-width: fit-content;
         margin: 0vh 1vw;
     }
-
+    .info01{
+        width: 40vw;
+        margin: 0vh 1vw;
+        min-width: fit-content;
+    }
     .mainUp{
         background-position: 0 0;
         background-image: url(../images/Sprites/Icons/Game01.png);
@@ -299,6 +307,10 @@ header{
     .info01,.info02{
         height: 50vh;       
     }   
+
+    .downCenter{
+        width: 20vw;
+    }
 
     .dropdown{
         display: none;
