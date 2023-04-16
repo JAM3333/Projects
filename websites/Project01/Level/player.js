@@ -646,11 +646,11 @@ function masterUpdate(){
                 if (input[0] == 0 && input[1] == 0){
                     if (state.player.gunRot <= 180 && state.player.gunRot >= 0){
                         gunStyle.transform = "rotate("+state.player.gunRot+"deg)";
-                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdle.png";
+                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdle"+state.player.animFrame+".png";
                     }
                     else {
                         gunStyle.transform = "rotate("+state.player.gunRot+"deg) scale(-1,1)";
-                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdleInverted.png";
+                        playerStyle.backgroundImage = "url(../images/Sprites/player/playerIdleInverted"+state.player.animFrame+".png";
                     }
                 } else {
                     if (state.player.gunRot <= 180 && state.player.gunRot >= 0){
