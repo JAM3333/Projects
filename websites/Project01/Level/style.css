@@ -215,6 +215,12 @@ input{
 	margin-left: 1vw;
 }
 
+#Buy1Img,#Buy2Img,#Buy3Img{
+	aspect-ratio: 1/1;
+	width: auto;
+	height: 10vh;
+}
+
 .uiCenter>h2{
 	font-size: 2vh;
 	margin-top: 1.5vh;
@@ -252,5 +258,10 @@ input{
 	}
 	.Buy1,.Buy2,.Buy3{
 		width: 17vw;
+	}
+	#Buy1Img,#Buy2Img,#Buy3Img{
+		aspect-ratio: 1/1;
+		width: auto;
+		height: 15vh;
 	}
 }

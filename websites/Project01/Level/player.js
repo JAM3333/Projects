@@ -177,6 +177,10 @@ function upgrade(state,index){
 
             let maxUpgrades = 0;
 
+            document.getElementById("Buy1Img").src = "../images/Sprites/upgrades/Upgrades"+upgradeCycle+".png"
+            document.getElementById("Buy2Img").src = "../images/Sprites/upgrades/Upgrades"+(upgradeCycle+1)+".png"
+            document.getElementById("Buy3Img").src = "../images/Sprites/upgrades/Upgrades"+(upgradeCycle+2)+".png"
+
             document.getElementById('buy1').innerHTML = upgradeNames[upgradeCycle];
             document.getElementById('buy1').style.backgroundColor = "transparent";
             document.getElementById('buy2').innerHTML = upgradeNames[upgradeCycle+1];
