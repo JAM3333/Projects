@@ -108,7 +108,6 @@ document.getElementById('btnSettings').onclick = function() {
         document.getElementById("centerTitle").innerHTML = "Settings";
         document.getElementsByClassName("Shop")[0].style.display = "none";
         document.getElementsByClassName("Settings")[0].style.display = "flex";
-
         document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(-95vw)";
         paused = true;
     } else if (!upgradeMenu) {

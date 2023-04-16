@@ -43,6 +43,7 @@ input{
 
 .ui{
 	display: flex;
+	align-items: center;
 	flex-direction: column;
 }
 
@@ -133,7 +134,7 @@ input{
 
 .Shop{
 	display: none;
-	height: 30vh;
+	height: 50vh;
 	width: 60vw;
 	margin-top: 1vh;
 	overflow:visible;
@@ -144,9 +145,10 @@ input{
 
 .upgrades{
 	display: flex;
-	height: 30vh;
+	height: 40vh;
+	gap: 1vh;
 	align-items: center;
-	flex-direction: row;
+	flex-direction: column;
 }
 
 .Settings{
@@ -166,7 +168,7 @@ input{
 
 .Buy1,.Buy2,.Buy3{
 	height: 25vh;
-	width: 20vw;
+	width: 50vw;
 	padding: 0vh 1vw;
 	display: flex;
 	align-items: center;
@@ -209,6 +211,7 @@ input{
 #btnSettings{
 	background-color: transparent;
 	width: 6vw;
+	aspect-ratio: 1/1;
 	margin-left: 1vw;
 }
 
@@ -231,5 +234,23 @@ input{
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position-x: right;
+	}
+	#btnSettings{
+		aspect-ratio: 1/1;
+		height: 5vh;
+		width: fit-content;
+	}
+	.Settings{
+		width: 20vw;
+	}
+	.upgrades{
+		display: flex;
+		height: 40vh;
+		width: 60vw;
+		align-items: center;
+		flex-direction: row;
+	}
+	.Buy1,.Buy2,.Buy3{
+		width: 17vw;
 	}
 }
