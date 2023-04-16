@@ -16,7 +16,7 @@ let priceIncrease = "1.2;100"; // x1.2 + 100 every upgrade
 let upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",critical:"5;5;25",criticalDamage:"1;1;3",damage: "1;1;3"}; // current;upgradeAmount;maxAmount
 let upgradeNames = ["Firerate","Player Speed","Player Lives","Bullet Speed","Bullet Lifetime","Critical Hit Chance","Critical Hit Damage","Bullet Damage"];
 let upgradeCycle = 0;
-const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 15},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 30},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 1,lives: 5,score: 50}]
+const enemyTypes = [{name: "Test1",sprite: "../images/Sprites/enemy/SkeletonSmall/SkeletonWalk.png",speed: 2,lives: 1,score: 15},{name: "Test2",sprite: "../images/Sprites/enemy/ZombieSmall/ZombieWalk.png",speed: 3,lives: 1,score: 30},{name: "Test3",sprite: "../images/Sprites/enemy/ZombieBuff/ZombieBuff.png",speed: 1,lives: 5,score: 50}]
 
 const enemyInterval = 200;
 const AnimFrameChange = 500;
