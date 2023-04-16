@@ -7,7 +7,7 @@
 }
 
 body{
-    background: rgb(48, 51, 43);
+    background:  rgb(36, 56, 66);
 }
 
 
@@ -96,14 +96,14 @@ header{
 }
 .mainUp {
     background-position: 0 -10vh;
-    background-image: url(../images/Sprites/Icons/Game02.png);
+    background-image: url(../../images/Sprites/Icons/Game02.png);
     background-repeat: no-repeat;
     background-size: 100vw;
     height: calc(1.2 * 100vw);
 }
 
 .mainDown {
-    background-color: rgb(48, 51, 43);
+    background:  rgb(36, 56, 66);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -111,45 +111,10 @@ header{
     width: auto;
     font-size: 11px;
 }
-.downCenter {
-    background: rgb(38, 41, 43);
-    border: solid 5px rgb(75, 75, 75);
-    border-top: solid 5px rgb(129, 129, 129);
-    border-left: solid 5px rgb(129, 129, 129);
-    width: 350px;
-    height: 50px;
-    margin-top: -5vh;
-    padding: 1vh 0vw;
-    z-index: 2;
-    font-size: 3vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition-duration: 1s; 
-}
 
-.downCenter:hover {
-    animation: downCenterAnim 2s cubic-bezier(0.77, 0, 0.175, 1) infinite reverse;
-}
 
-@keyframes downCenterAnim {
-    from {
-        transform: scale(1,1);
-    }
-
-    50% {
-        transform: scale(1.2,1.2);
-    }
-    to {
-        transform: scale(1,1); 
-    }
-}
-
-.downCenter:hover{
-    transform: rotateX('10deg');
-}
 .downInfo {
-    background: linear-gradient(-20deg, rgb(17, 26, 34) 0%, rgb(36, 56, 66) 100%);
+    background:  rgb(36, 56, 66);
     width: 80vw;
     height: fit-content;
     overflow-y: visible;
@@ -163,36 +128,14 @@ header{
     border-top: solid 5px rgb(129, 129, 129);
 }
 
-.info01{
-    background: linear-gradient(-20deg, rgb(44, 88, 70) 0%, rgb(36, 56, 66) 100%);
- 
-    width: 80vw;
-    height: fit-content;
-    padding: 3vh 0;
-    line-height: 2;
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-.info01>div>h3{
-    border-bottom: 1px solid rgb(255, 255, 255);
-}
-.info01>div{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items:center;
-    left: 0;
-}
 
 .info02{
     background: linear-gradient(-20deg, rgb(97, 73, 36) 0%, rgb(36, 56, 66) 100%);
  
     width: 80vw;
     height: fit-content;
+    position: absolute;
+    top: 50vh;
     padding: 3vh 0;
     line-height: 2;
     display: flex;
@@ -212,7 +155,7 @@ header{
 
 @media only screen and (min-width: 768px)  and (orientation: landscape) and (min-aspect-ratio: 3/6){
     .downInfo {
-        flex-direction: row;
+        height: 20vh;
     }
 
     .info02{
@@ -221,13 +164,12 @@ header{
 
     .mainUp{
         background-position: 0 0;
-        background-image: url(../images/Sprites/Icons/Game01.png);
+        background-image: url(../../images/Sprites/Icons/Game01.png);
         height: calc(0.53 * 100vw);
     }
 
     .mainDown {
-        background-color: rgb(48, 51, 43);
-        height: 90%;
+        height: 20vh;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -296,9 +238,7 @@ header{
         cursor: pointer;
     }
 
-    .info01,.info02{
-        height: 50vh;       
-    }   
+
 
     .dropdown{
         display: none;

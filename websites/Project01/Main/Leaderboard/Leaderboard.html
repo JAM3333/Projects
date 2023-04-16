@@ -5,31 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" type="image/x-icon" href="../../images/Favicon.png">
+    <link rel="icon" type="image/x-icon" href="../..-/images/Favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-    <title>Nightfall - Leaderboard</title>
+    <title>Nightfall - Main Page</title>
 </head>
 <body>
     <header>
         <div class="headerCenter">  
             <div class="headerDivName" onclick="location.href='../index.html';">
-                 <img class="logo" src="../../images/sprites/background/Elements/ZombieHand.png" draggable=false></img>
+                 <img class="logo" src="../../images/Favicon.png" draggable=false>
+                 <p>Nightfall</p>
             </div>
-            <div class="headerDiv" onclick="location.href='Leaderboard.html';">
-                <p>Leaderboard</p>
+            <div class="headerDivSites">
+                <div class="headerDiv" onclick="location.href='Leaderboard.html';">
+                    <p>Leaderboard</p>
+                </div>
+                <div class="headerDiv" onclick="location.href='About/About.html';">
+                    <p>About</p>
+                </div>
             </div>
-            <div class="headerDiv" onclick="location.href='../About/About.html';">
-                <p>About</p>
+            <div class="dropdown">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
         </div>
-
-
-<div class="info01">
+    </header>
+    <div class="main">
+        <div class="mainUp"></div>
+        <div class="mainDown">
+            <div class="downInfo">
+                <div class="info02">
                     <h2>LEADERBOARD:</h2>
                     <p id="rank1">User1492   -   42125 Points   -   #1</p>
                     <p id="rank2">User5387   -   40200 Points   -   #2</p>
@@ -40,15 +51,21 @@
                     <p id="rank7">User6987   -   23000 Points   -   #7</p>
                     <p id="rank8">User1663   -   19200 Points   -   #8</p>
                     <p id="rank9">User1527   -   23000 Points   -   #9</p>
-
+                    <p id="rank10">User1323   -   22000 Points   -   #10</p>
+                    <p id="rank11">User1433   -   21125 Points   -   #11</p>
+                    <p id="rank12">User2130   -   19200 Points   -   #12</p>
+                    <p id="rank13">User6982   -   18190 Points   -   #13</p>
+                    <p id="rank14">User6385   -   16710 Points   -   #14</p>
+                    <p id="rank15">User7343   -   16300 Points   -   #15</p>
+                    <p id="rank16">User2348   -   16050 Points   -   #16</p>
+                    <p id="rank17">User7394   -   15020 Points   -   #17</p>
+                    <p id="rank18">User4358   -   12200 Points   -   #18</p>
+                    <p id="rank19">User8782   -   10300 Points   -   #19</p>
+                    <p id="rank20">User7980   -   9230 Points   -   #20</p>
                 </div>
-                <div class="info01">
-                    <h2>CREDITS:</h2>
-                    <p>Game - Jonas Muxel</p>
-                    <p>Pixel-Art - Nils Miessgang</p>
-                    <p>Game Thumbnail - Jonas Muxel</p>
-                    <p>UI Design - Nils Miessgang</p>
-                    <p>Page Layout - Jonas Muxel</p>
-                    <p>Sound Effects - pixabay.com</p>
-                    <p>Music - pixabay.com</p>
-                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../app.js"></script>
+</body>
+</html>
