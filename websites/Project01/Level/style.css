@@ -36,9 +36,22 @@ img{
 }
 
 input{
-	background-color: black;
 	color: white;
 	padding: 1vw 1vh;
+}
+
+
+
+
+#set01, #set02, #set03 {
+	background: rgb(30, 30, 30);
+	border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
+}
+
+#set01:hover, #set02:hover, #set03:hover {
+	background: rgb(50, 50, 50);
 }
 
 .ui{
@@ -62,13 +75,16 @@ input{
 }
 
 .uiTop>p,.uiTop>a{
-    background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
+    background: rgb(30, 30, 30);
 	padding: 1vh 3vw;
 	margin: 20px 15px;
 }
 
 .uiTopCenter{
-	background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
+	background: rgb(38, 41, 43);
+	border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
 	padding: 1vh 3vw;
 	margin: 20px 15px;
 	display: flex;
@@ -77,8 +93,10 @@ input{
 }
 
 .uiDown{
-    background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
-	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
+    background: rgb(38, 41, 43);
+	border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
 	position: absolute;
 	z-index: 100;
 
@@ -98,13 +116,25 @@ input{
 }
 
 #uiLives{
+	background: rgb(38, 41, 43);
+	border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
 	transform-origin: right;
 	transition-duration: 1s;
 }
 
 #buttonPlay{
+	background: rgb(30, 30, 30);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
 	font-size: 2vh;
 	padding: 3vh 12vw;
+}
+
+#buttonPlay:hover {
+	background: rgb(50, 50, 50);
 }
 
 .uiDown:nth-child(1){
@@ -112,8 +142,10 @@ input{
 }
 
 .uiCenter{
-    background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
-	box-shadow: 0 0 1vh rgba(255, 255, 255, 0.75);
+    background: rgb(38, 41, 43);
+	border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
 	position: absolute;
 	z-index: 100;
 
@@ -144,6 +176,7 @@ input{
 }
 
 .upgrades{
+	background: rgb(38, 41, 43);
 	display: flex;
 	height: 40vh;
 	gap: 1vh;
@@ -152,11 +185,12 @@ input{
 }
 
 .Settings{
-    background: linear-gradient(-20deg, rgb(91, 104, 116) 0%, rgb(36, 56, 66) 100%);
+    background: rgb(38, 41, 43);
 	z-index: 100;
 
 	width: fit-content;
-
+	padding-left: 5px;
+	padding-right: 5px;
 
 	display: flex;
 	align-items: center;
@@ -204,6 +238,10 @@ input{
 }
 
 #btnUp,#btnLeft,#btnDown,#btnRight {
+	background: rgb(38, 41, 43);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
 	width: 20vw;
 	height: 6vh;
 }

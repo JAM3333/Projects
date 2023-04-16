@@ -130,13 +130,15 @@ header{
 
 
 .info02{
-    background: linear-gradient(-20deg, rgb(97, 73, 36) 0%, rgb(36, 56, 66) 100%);
- 
+    background: rgb(38, 41, 43);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
     width: fit-content;
     min-width: 80vw;
     height: fit-content;
     position: absolute;
-    top: 50vh;
+    top: 30vh;
     padding: 3vh 0;
     line-height: 2;
     display: flex;

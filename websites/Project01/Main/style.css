@@ -130,6 +130,7 @@ header{
 
 .downCenter:hover {
     animation: downCenterAnim 2s cubic-bezier(0.77, 0, 0.175, 1) infinite reverse;
+    background: rgb(50, 50, 50);
 }
 
 @keyframes downCenterAnim {
@@ -164,8 +165,10 @@ header{
 }
 
 .info01{
-    background: linear-gradient(-20deg, rgb(44, 88, 70) 0%, rgb(36, 56, 66) 100%);
- 
+    background: rgb(38, 41, 43);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
     width: fit-content;
     min-width: 80vw;
     height: fit-content;
@@ -190,8 +193,10 @@ header{
 }
 
 .info02{
-    background: linear-gradient(-20deg, rgb(97, 73, 36) 0%, rgb(36, 56, 66) 100%);
- 
+    background: rgb(38, 41, 43);
+    border: solid 5px rgb(75, 75, 75);
+    border-top: solid 5px rgb(129, 129, 129);
+    border-left: solid 5px rgb(129, 129, 129);
     width: fit-content;
     min-width: 80vw;
     height: fit-content;
