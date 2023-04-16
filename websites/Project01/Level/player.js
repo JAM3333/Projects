@@ -413,7 +413,9 @@ function gameEnd(){
     state.player.animFrame = 1;
 
     upgrades = {rate: "300;-60;120",plrSpeed: "10;1;17",lives: "3;1;6",speed: "15;2;21",lifetime: "5;1;7",critical:"5;5;25",criticalDamage:"1;1;3",damage: "1;1;3"};
-
+    upgradeCycle = 0;
+    currentPrice = 100;
+    
     enemyCount = 0;
     enemiesSpawned = false;
     loopBullet = 0;
