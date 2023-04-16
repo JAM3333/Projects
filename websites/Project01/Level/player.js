@@ -287,7 +287,7 @@ else {
 }
 
 function playAudio(audioFile,looped,volume,randSpeed) {
-    if (device == 0){
+    //if (device == 0){
         var audio = new Audio(audioFile);
         audio.loop = looped;
         audio.volume = volume;
@@ -295,7 +295,7 @@ function playAudio(audioFile,looped,volume,randSpeed) {
             audio.playbackRate = Math.random() + 0.5
         }
         audio.play();
-    }
+   // }
 }
 
 function createPlayer(){
