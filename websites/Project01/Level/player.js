@@ -48,9 +48,9 @@ let input = [0,0]; // x/y movement
 
 
 if (!localStorage.getItem("Highscore")){
-    highscore = localStorage.setItem("Highscore",0)
+    highscore = localStorage.setItem("Highscore",0);
 } else {
-    highscore = localStorage.getItem("Highscore")
+    highscore = localStorage.getItem("Highscore");
 }
 
 
