@@ -133,6 +133,13 @@ input{
 	padding: 3vh 12vw;
 }
 
+#HighscoreEndScreen{
+	display: none;
+	position: absolute;
+	font-size: 1.5vh;
+	transform: rotate(5deg) translate(10vw,1vh);
+}
+
 #buttonPlay:hover {
 	background: rgb(50, 50, 50);
 }
@@ -273,6 +280,10 @@ input{
 	margin-top: 2vh;
 }
 
+#Highscore{
+	margin-top: 1vh;
+}
+
 @media only screen and (min-width: 768px)  and (orientation: landscape) and (min-aspect-ratio: 3/6){
 	canvas{
 		background-color: black;
@@ -303,5 +314,10 @@ input{
 		aspect-ratio: 1/1;
 		width: auto;
 		height: 15vh;
+	}
+	#HighscoreEndScreen{
+		position: absolute;
+		font-size: 2vh;
+		transform: rotate(5deg) translate(10vw,0vh);
 	}
 }

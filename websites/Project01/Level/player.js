@@ -1,6 +1,7 @@
 window.addEventListener("load",function(){
 let player;
 let gun;
+let highscore;
 
 let playerStyle;
 let gunStyle;
@@ -43,6 +44,14 @@ let round = 0;
 
 let keyCodes = ["KeyD","KeyS","KeyA","KeyW"];
 let input = [0,0]; // x/y movement
+
+
+
+if (!localStorage.getItem("Highscore")){
+    highscore = localStorage.setItem("Highscore",0)
+} else {
+    highscore = localStorage.getItem("Highscore")
+}
 
 
 let state = {
@@ -386,13 +395,18 @@ function initiateUI(){
     document.getElementById("uiLives").innerHTML = "Lives: "+parseInt(upgrades.lives.split(";")[0]);      
     document.getElementById("uiScore").innerHTML = "Score: "+score;     
     document.getElementById("uiRound").innerHTML = "Round: "+round; 
+    document.getElementById("Highscore").innerHTML = "Highscore: "+highscore;
+    document.getElementById("HighscoreEndScreen").style.display = "none";
 }
 
 function gameEnd(){
-    document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)"
+    document.getElementsByClassName('uiCenter')[0].style.transform = "translateX(95vw)";
     document.getElementById("uiLives").style.transform = "scale(1)";        
-    document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)"
-
+    document.getElementsByClassName('uiDown')[0].style.transform = "translateY(27vh)";
+    if (score > parseInt(highscore)){
+        localStorage.setItem("Highscore",score);
+        highscore = localStorage.getItem("Highscore");
+    }
     context.clearRect(0,0,window.innerWidth,window.innerHeight);
     enemies.length = 0;
     if (device == 1){
@@ -685,6 +699,11 @@ function masterUpdate(){
         }
         else {
             document.getElementById("play").innerHTML = "Game Over";
+            if (score > highscore){
+                document.getElementById("HighscoreEndScreen").style.display = "flex";
+            }else{
+                document.getElementById("HighscoreEndScreen").style.display = "none";
+            }
             document.getElementById("buttonPlay").value = "Play Again";
             document.getElementById("uiEndScore").innerHTML = "You reached a Score of "+score+" and survived until Round "+round+". [Your Rank: #1]"
             document.getElementsByClassName('uiDown')[0].style.transform = "translateY(0vh)"
