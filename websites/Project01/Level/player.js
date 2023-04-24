@@ -47,7 +47,7 @@ let input = [0,0]; // x/y movement
 
 
 
-if (!localStorage.getItem("Highscore")){
+if (!localStorage.getItem("Highscore") || localStorage.getItem("Highscore") == 0){
     highscore = localStorage.setItem("Highscore",0);
 } else {
     highscore = localStorage.getItem("Highscore");
@@ -431,6 +431,7 @@ function gameEnd(){
     currentPrice = 100;
     
     enemyCount = 0;
+    lastEnemyCount = 0;
     enemiesSpawned = false;
     loopBullet = 0;
     loopEnemy = 0;
@@ -454,6 +455,7 @@ const gameSetup = function(){
 
 function masterUpdate(){
     if (!paused) {
+        console.log(lastEnemyCount)
         if (parseInt(upgrades.lives.split(";")[0]) > 0){
             if (enemiesSpawned == false || enemyCount > 0){
                 loopBullet += 16;
