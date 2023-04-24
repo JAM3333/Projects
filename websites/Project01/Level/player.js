@@ -27,7 +27,7 @@ const context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = this.window.innerHeight;
 context.imageSmoothingEnabled = false;
-
+let audioEnabled = true;
 let loopBullet = 0;
 let loopEnemy = 0;
 
@@ -47,11 +47,11 @@ let input = [0,0]; // x/y movement
 
 
 
-if (!localStorage.getItem("Highscore") || localStorage.getItem("Highscore") == 0){
-    highscore = localStorage.setItem("Highscore",0);
-} else {
-    highscore = localStorage.getItem("Highscore");
+if ( typeof localStorage.getItem("Highscore") == "undefined" || !localStorage.getItem("Highscore")){
+    localStorage.setItem("Highscore",0);
 }
+
+highscore = localStorage.getItem("Highscore");
 
 
 let state = {
@@ -231,6 +231,11 @@ function upgrade(state,index){
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
     device = 1;
+    if (confirm("Playing with audio may cause sever performance drops on your device:\n- Press OK to continue without audio\n- Press CANCEL to continue with audio")){
+        audioEnabled = false;
+    } else {
+        audioEnabled = true;
+    }
     document.addEventListener("touchmove",function(info){
         info.preventDefault();
         [...info.changedTouches].forEach(function(touch){
@@ -298,7 +303,7 @@ else {
 }
 
 function playAudio(audioFile,looped,volume,randSpeed) {
-    //if (device == 0){
+    if (audioEnabled){
         var audio = new Audio(audioFile);
         audio.loop = looped;
         audio.volume = volume;
@@ -306,7 +311,7 @@ function playAudio(audioFile,looped,volume,randSpeed) {
             audio.playbackRate = Math.random() + 0.5
         }
         audio.play();
-   // }
+    }
 }
 
 function createPlayer(){
