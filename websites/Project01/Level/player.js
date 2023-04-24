@@ -231,7 +231,7 @@ function upgrade(state,index){
 
 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
     device = 1;
-    if (confirm("Playing with audio may cause sever performance drops on your device:\n- Press OK to continue without audio\n- Press CANCEL to continue with audio")){
+    if (confirm("Playing with audio may cause severe performance drops on your device:\n- Press OK to continue without audio\n- Press CANCEL to continue with audio")){
         audioEnabled = false;
     } else {
         audioEnabled = true;
