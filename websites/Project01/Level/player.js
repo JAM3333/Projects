@@ -455,7 +455,6 @@ const gameSetup = function(){
 
 function masterUpdate(){
     if (!paused) {
-        console.log(lastEnemyCount)
         if (parseInt(upgrades.lives.split(";")[0]) > 0){
             if (enemiesSpawned == false || enemyCount > 0){
                 loopBullet += 16;
